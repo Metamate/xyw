@@ -15,8 +15,8 @@ pub struct BoidPlugin;
 impl Plugin for BoidPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(GameTimer(Timer::from_seconds(0.01, true)))
-            .insert_resource(ClearColor(CLEAR))
-            .add_startup_system(setup);
+            .insert_resource(ClearColor(CLEAR));
+        //.add_startup_system(setup)
         //.add_system(update_boids);
     }
 }
