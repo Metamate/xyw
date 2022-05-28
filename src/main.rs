@@ -8,7 +8,7 @@ const ALIGNMENT: f32 = 1.;
 const COHESION: f32 = 0.05;
 const SEPARATION: f32 = 1.;
 
-pub const CLEAR: Color = Color::rgb(1., 1., 1.);
+pub const CLEAR: Color = Color::rgb(0.95, 0.95, 0.85);
 
 pub struct BoidPlugin;
 
