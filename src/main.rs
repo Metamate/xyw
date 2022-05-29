@@ -11,7 +11,7 @@ const SEPARATION: f32 = 1.;
 const WINDOW_HEIGHT: f32 = 900.;
 const WINDOW_WIDTH: f32 = 1600.;
 
-pub const BACKGROUND_COLOR: Color = Color::rgb(1., 1., 1.);
+pub const BACKGROUND_COLOR: Color = Color::rgb(0.95, 0.95, 0.8);
 
 pub struct BoidPlugin;
 
