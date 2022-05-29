@@ -11,7 +11,7 @@ const SEPARATION: f32 = 1.;
 const WINDOW_HEIGHT: f32 = 900.;
 const WINDOW_WIDTH: f32 = 1600.;
 
-pub const BACKGROUND_COLOR: Color = Color::rgb(0.95, 0.95, 0.85);
+pub const BACKGROUND_COLOR: Color = Color::rgb(1., 1., 1.);
 
 pub struct BoidPlugin;
 
@@ -30,8 +30,6 @@ fn main() {
     App::new()
         .insert_resource(WindowDescriptor {
             title: "Superboids".to_string(),
-            height: WINDOW_HEIGHT,
-            width: WINDOW_WIDTH,
             ..default()
         })
         .add_plugins(DefaultPlugins)
@@ -43,14 +41,13 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
-    window: Res<WindowDescriptor>,
 ) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 
     for _ in 0..NO_BOIDS {
         let boid = Boid::new(
-            random_range(-window.width / 2., window.width / 2.),
-            random_range(-window.height / 2., window.height / 2.),
+            random_range(-WINDOW_WIDTH / 2., WINDOW_WIDTH / 2.),
+            random_range(-WINDOW_HEIGHT / 2., WINDOW_HEIGHT / 2.),
             5.,
             5.,
             (random(), random(), random()),
@@ -70,7 +67,6 @@ fn setup(
 
 fn update_boids(
     time: Res<Time>,
-    window: Res<WindowDescriptor>,
     mut timer: ResMut<GameTimer>,
     mut query: Query<(&mut Boid, &mut Transform)>,
 ) {
@@ -88,10 +84,10 @@ fn update_boids(
 
             boid.update();
             boid.contain(
-                -window.width / 2.,
-                window.width / 2.,
-                -window.height / 2.,
-                window.height / 2.,
+                -WINDOW_WIDTH / 2.,
+                WINDOW_WIDTH / 2.,
+                -WINDOW_HEIGHT / 2.,
+                WINDOW_HEIGHT / 2.,
             );
             transform.translation.y = boid.position.y;
             transform.translation.x = boid.position.x;
