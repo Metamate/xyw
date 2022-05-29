@@ -1,16 +1,7 @@
 <html><head>
+
     
     <style type="text/css">body {
-    background: linear-gradient(
-            135deg,
-            white 0%,
-            white 49%,
-            black 49%,
-            black 51%,
-            white 51%,
-            white 100%
-    ) repeat;
-    background-size: 20px 20px;
     margin: 0;
 }
 canvas {
@@ -86,6 +77,17 @@ canvas {
   });
 })();
 </script>
+    <script>
+        document.documentElement.addEventListener("click", function (e) {
+            requestFullScreen();
+        }, false);
+
+        function requestFullScreen() {
+            if (!document.fullscreenElement) {
+                document.querySelector("canvas").requestFullscreen();
+            }
+        }
+    </script>
 
 
 <script type="module">import init from '/xyw/xyz-38dbf845dc3d1182.js';init('/xyw/xyz-38dbf845dc3d1182_bg.wasm');</script></body></html>
