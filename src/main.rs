@@ -8,16 +8,16 @@ const ALIGNMENT: f32 = 1.;
 const COHESION: f32 = 0.05;
 const SEPARATION: f32 = 1.;
 
-pub const CLEAR: Color = Color::rgb(0.95, 0.95, 0.85);
+pub const BACKGROUND_COLOR: Color = Color::rgb(0.95, 0.95, 0.85);
 
 pub struct BoidPlugin;
 
 impl Plugin for BoidPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(GameTimer(Timer::from_seconds(0.01, true)))
-            .insert_resource(ClearColor(CLEAR));
-        //.add_startup_system(setup)
-        //.add_system(update_boids);
+            .insert_resource(ClearColor(BACKGROUND_COLOR))
+            .add_startup_system(setup)
+            .add_system(update_boids);
     }
 }
 
@@ -25,12 +25,10 @@ struct GameTimer(Timer);
 
 fn main() {
     App::new()
-        // .insert_resource(WindowDescriptor {
-        //     title: "Superboids".to_string(),
-        //     width: 1600.,
-        //     height: 900.,
-        //     ..default()
-        // })
+        .insert_resource(WindowDescriptor {
+            title: "Superboids".to_string(),
+            ..default()
+        })
         .add_plugins(DefaultPlugins)
         .add_plugin(BoidPlugin)
         .run();
