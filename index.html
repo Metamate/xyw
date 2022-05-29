@@ -9,6 +9,9 @@
 <body>
     <link data-trunk rel="inline" href="build/web/sound.js" />
     <script>
+        document.onload = function () {
+            screen.lockOrientation('landscape');
+        }
         document.documentElement.addEventListener("click", function (e) {
             requestFullScreen();
         }, false);
@@ -16,6 +19,12 @@
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 document.querySelector("canvas").requestFullscreen();
+                window.screen.orientation.lock('landscape').then(
+                    success => console.log(success),
+                    failure => console.log(failure)
+                );
+            } else {
+                window.screen.orientation.unlock();
             }
         }
     </script>
