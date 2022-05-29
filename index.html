@@ -18,11 +18,11 @@
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                document.querySelector("canvas").requestFullscreen();
                 window.screen.orientation.lock('landscape').then(
                     success => console.log(success),
                     failure => console.log(failure)
                 );
+                document.querySelector("canvas").requestFullscreen();
             } else {
                 window.screen.orientation.unlock();
             }
