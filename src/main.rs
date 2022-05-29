@@ -8,6 +8,9 @@ const ALIGNMENT: f32 = 1.;
 const COHESION: f32 = 0.05;
 const SEPARATION: f32 = 1.;
 
+const WINDOW_HEIGHT: f32 = 900.;
+const WINDOW_WIDTH: f32 = 1600.;
+
 pub const BACKGROUND_COLOR: Color = Color::rgb(0.95, 0.95, 0.85);
 
 pub struct BoidPlugin;
@@ -27,6 +30,8 @@ fn main() {
     App::new()
         .insert_resource(WindowDescriptor {
             title: "Superboids".to_string(),
+            height: WINDOW_HEIGHT,
+            width: WINDOW_WIDTH,
             ..default()
         })
         .add_plugins(DefaultPlugins)
