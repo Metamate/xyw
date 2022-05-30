@@ -30,8 +30,8 @@ fn main() {
     App::new()
         .insert_resource(WindowDescriptor {
             title: "Superboids".to_string(),
-            width: 1600.,
-            height: 900.,
+            width: 800.,
+            height: 450.,
             ..default()
         })
         .add_plugins(DefaultPlugins)
