@@ -29,7 +29,6 @@ fn main() {
             title: "Superboids".to_string(),
             width: 1280.,
             height: 720.,
-            resizable: false,
             ..default()
         })
         .add_system(window_resize)

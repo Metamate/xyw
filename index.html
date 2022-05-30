@@ -9,15 +9,50 @@
 <body>
     <link data-trunk rel="inline" href="build/web/sound.js" />
     <script>
+        // window.addEventListener('resize', resizeCanvas, false);
+
+        // function resizeCanvas() {
+        //     let canvas = document.querySelector("canvas");
+
+        //     var displayWidth = canvas.clientWidth;
+        //     var displayHeight = canvas.clientHeight;
+
+        //     if (canvas.width != displayWidth ||
+        //         canvas.height != displayHeight) {
+        //         canvas.width = displayWidth;
+        //         canvas.height = displayHeight;
+        //     }
+
+        //     console.log("resized " + canvas.width + " " + canvas.height);
+        // }
+
+        // window.addEventListener('DOMContentLoaded', (event) => {
+        //     appendChild();
+        // });
+
+        // function appendChild() {
+        //     let canvas = document.querySelector("canvas");
+        //     let container = document.querySelector("#container");
+        //     container.appendChild(canvas)
+        // }
 
         document.documentElement.addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                document.querySelector("canvas").requestFullscreen();
+                document.querySelector("canvas").requestFullscreen().then(
+                    window.screen.orientation.lock('landscape').then(
+                        success => console.log("rotated"),
+                        failure => console.log("no rotate")
+                    )
+                );
+            } else {
+                window.screen.orientation.unlock();
             }
         }
+        // resizeCanvas();
     </script>
+    <!-- <div id="container" style="width: 960px; height: 600px;position: relative;"></div> -->
 </body>
 
 </html>
