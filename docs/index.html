@@ -78,12 +78,16 @@ canvas {
 })();
 </script>
     <script>
-        document.onload = function () {
-            screen.lockOrientation('landscape');
-        }
-        document.documentElement.addEventListener("click", function (e) {
-            requestFullScreen();
-        }, false);
+        // window.addEventListener('resize', resizeCanvas, false);
+
+        // function resizeCanvas() {
+        //     let canvas = document.querySelector("canvas");
+        //     canvas.width = window.innerWidth;
+        //     canvas.height = window.innerHeight;
+        //     console.log("resized " + canvas.width + " " + canvas.height);
+        // }
+
+        document.documentElement.addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
