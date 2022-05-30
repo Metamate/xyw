@@ -3,6 +3,8 @@
     
     <style type="text/css">body {
     margin: 0;
+    padding:0;
+    height:100vh;
 }
 canvas {
     background-color: white;
@@ -10,8 +12,8 @@ canvas {
     height: auto !important;
 }</style>
 
-<link rel="preload" href="/xyw/xyz-3c8e3fc34f752d82_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
-<link rel="modulepreload" href="/xyw/xyz-3c8e3fc34f752d82.js"></head>
+<link rel="preload" href="/xyw/xyz-17cb1f265ebe74d_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/xyw/xyz-17cb1f265ebe74d.js"></head>
 
 <body>
     <script>// Insert hack to make sound autoplay on Chrome as soon as the user interacts with the tab:
@@ -78,30 +80,15 @@ canvas {
 })();
 </script>
     <script>
-        // window.addEventListener('resize', resizeCanvas, false);
-
-        // function resizeCanvas() {
-        //     let canvas = document.querySelector("canvas");
-        //     canvas.width = window.innerWidth;
-        //     canvas.height = window.innerHeight;
-        //     console.log("resized " + canvas.width + " " + canvas.height);
-        // }
 
         document.documentElement.addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                document.querySelector("canvas").requestFullscreen().then(
-                    window.screen.orientation.lock('landscape').then(
-                        success => console.log("rotated"),
-                        failure => console.log("no rotate")
-                    )
-                );
-            } else {
-                window.screen.orientation.unlock();
+                document.querySelector("canvas").requestFullscreen();
             }
         }
     </script>
 
 
-<script type="module">import init from '/xyw/xyz-3c8e3fc34f752d82.js';init('/xyw/xyz-3c8e3fc34f752d82_bg.wasm');</script></body></html>
+<script type="module">import init from '/xyw/xyz-17cb1f265ebe74d.js';init('/xyw/xyz-17cb1f265ebe74d_bg.wasm');</script></body></html>

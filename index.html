@@ -9,27 +9,12 @@
 <body>
     <link data-trunk rel="inline" href="build/web/sound.js" />
     <script>
-        // window.addEventListener('resize', resizeCanvas, false);
-
-        // function resizeCanvas() {
-        //     let canvas = document.querySelector("canvas");
-        //     canvas.width = window.innerWidth;
-        //     canvas.height = window.innerHeight;
-        //     console.log("resized " + canvas.width + " " + canvas.height);
-        // }
 
         document.documentElement.addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                document.querySelector("canvas").requestFullscreen().then(
-                    window.screen.orientation.lock('landscape').then(
-                        success => console.log("rotated"),
-                        failure => console.log("no rotate")
-                    )
-                );
-            } else {
-                window.screen.orientation.unlock();
+                document.querySelector("canvas").requestFullscreen();
             }
         }
     </script>
