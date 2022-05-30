@@ -10,8 +10,8 @@ canvas {
     height: auto !important;
 }</style>
 
-<link rel="preload" href="/xyw/xyz-bad937737b208e29_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
-<link rel="modulepreload" href="/xyw/xyz-bad937737b208e29.js"></head>
+<link rel="preload" href="/xyw/xyz-da54207667bd019a_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/xyw/xyz-da54207667bd019a.js"></head>
 
 <body>
     <script>// Insert hack to make sound autoplay on Chrome as soon as the user interacts with the tab:
@@ -88,7 +88,7 @@ canvas {
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 window.screen.orientation.lock('landscape').then(
-                    document.querySelector("canvas").requestFullscreen()
+                    success => document.querySelector("canvas").requestFullscreen()
                 );
             } else {
                 window.screen.orientation.unlock();
@@ -97,4 +97,4 @@ canvas {
     </script>
 
 
-<script type="module">import init from '/xyw/xyz-bad937737b208e29.js';init('/xyw/xyz-bad937737b208e29_bg.wasm');</script></body></html>
+<script type="module">import init from '/xyw/xyz-da54207667bd019a.js';init('/xyw/xyz-da54207667bd019a_bg.wasm');</script></body></html>
