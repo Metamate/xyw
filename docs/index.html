@@ -6,8 +6,8 @@
 }
 canvas {
     background-color: white;
-    /* width: 100% !important;
-    height: auto !important; */
+    width: 100% !important;
+    height: auto !important;
 }</style>
 
 <link rel="preload" href="/xyw/xyz-bad937737b208e29_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
@@ -88,8 +88,7 @@ canvas {
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 window.screen.orientation.lock('landscape').then(
-                    success => document.querySelector("canvas").requestFullscreen(),
-                    failure => document.querySelector("canvas").requestFullscreen()
+                    document.querySelector("canvas").requestFullscreen()
                 );
             } else {
                 window.screen.orientation.unlock();
