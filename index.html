@@ -19,7 +19,7 @@
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 window.screen.orientation.lock('landscape').then(
-                    document.querySelector("canvas").requestFullscreen()
+                    success => document.querySelector("canvas").requestFullscreen()
                 );
             } else {
                 window.screen.orientation.unlock();
