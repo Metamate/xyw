@@ -5,16 +5,18 @@ canvas {
     padding: 0px;
     width: 100%;
     height: 100%;
-    overflow: hidden;
     position: absolute;
     background: black;
     z-index: 0;
 }
 canvas {
     width: 100% !important;
-    height: auto !important;
+    height: 100% !important;
+    object-fit: contain;
+    /* max-width: 1280px;
+    height: auto !important; */
 }
-body {
+/* body {
     background: linear-gradient(-45deg, #a6a6a6, #5ac05a, #262626, #a6a6a6);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
@@ -22,7 +24,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */
 
 /* canvas {
     background-color: black;
