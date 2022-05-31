@@ -13,26 +13,34 @@
         let setup = false;
 
         document.addEventListener('click', requestFullScreen, false);
-        document.addEventListener('fullscreenchange', toggleOrientation, false);
+        // document.addEventListener('fullscreenchange', toggleOrientation, false);
 
-        function toggleOrientation() {
-            if (document.fullscreenElement) {
-                window.screen.orientation.lock('landscape').then(
-                    success => console.log("rotated"),
-                    failure => console.log("no rotate")
-                )
-            }
-            else {
-                window.screen.orientation.unlock();
-            }
-        }
+        // function toggleOrientation() {
+        //     if (document.fullscreenElement) {
+        //         window.screen.orientation.lock('landscape').then(
+        //             success => console.log("rotated"),
+        //             failure => console.log("no rotate")
+        //         )
+        //     }
+        //     else {
+        //         window.screen.orientation.unlock();
+        //     }
+        // }
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 if (!setup) {
                     setupFullscreen();
                 }
-                document.querySelector("#container").requestFullscreen();
+                document.querySelector("#container").requestFullscreen().then(
+                    window.screen.orientation.lock('landscape').then(
+                        success => console.log("rotated"),
+                        failure => console.log("no rotate")
+                    )
+                );
+            }
+            else {
+                window.screen.orientation.unlock();
             }
         }
 
