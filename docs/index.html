@@ -16,30 +16,18 @@ canvas {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain;
-    /* max-width: 1280px;
-    height: auto !important; */
 }
 #container {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
 }
-/* body {
+body {
     background: linear-gradient(-45deg, #a6a6a6, #5ac05a, #262626, #a6a6a6);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
+}
 
-/* canvas {
-    background-color: black;
-    width: 100% !important;
-    height: auto !important;
-} */
-/* @keyframes gradient {
+@keyframes gradient {
     0% {
       background-position: 0% 50%;
     }
@@ -49,7 +37,7 @@ canvas {
     100% {
       background-position: 0% 50%;
     }
-  } */</style>
+  }</style>
 
 <link rel="preload" href="/xyw/xyz-887d444f8f4df057_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
 <link rel="modulepreload" href="/xyw/xyz-887d444f8f4df057.js"></head>
@@ -119,59 +107,41 @@ canvas {
 })();
 </script>
     <script>
-        // window.addEventListener('resize', resizeCanvas, false);
 
-        // function resizeCanvas() {
-        //     let canvas = document.querySelector("canvas");
-
-        //     var displayWidth = canvas.clientWidth;
-        //     var displayHeight = canvas.clientHeight;
-
-        //     if (canvas.width != displayWidth ||
-        //         canvas.height != displayHeight) {
-        //         canvas.width = displayWidth;
-        //         canvas.height = displayHeight;
-        //     }
-
-        //     console.log("resized " + canvas.width + " " + canvas.height);
-        // }
-
-        // window.addEventListener('DOMContentLoaded', (event) => {
-        //     appendChild();
-        // });
-
-        function appendChild() {
-            let canvas = document.querySelector("canvas");
-            let container = document.querySelector("#container");
-            container.appendChild(canvas)
-        }
+        let setup = false;
 
         document.documentElement.addEventListener('click', requestFullScreen, false);
+        document.addEventListener('fullscreenchange', toggleOrientation, false);
 
-        // document.documentElement.addEventListener('contextmenu', function (ev) {
-        //     ev.preventDefault();
-        //     appendChild();
-        //     return false;
-        // }, false);
+        function toggleOrientation() {
+            if (document.fullscreenElement) {
+                window.screen.orientation.lock('landscape').then(
+                    success => console.log("rotated"),
+                    failure => console.log("no rotate")
+                )
+            }
+            else {
+                window.screen.orientation.unlock();
+            }
+        }
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                appendChild();
-                document.querySelector("#container").requestFullscreen()
+                if (!setup) {
+                    setupFullscreen();
+                }
+                document.querySelector("#container").requestFullscreen();
             }
-            //     .then(
-            //         window.screen.orientation.lock('landscape').then(
-            //             success => console.log("rotated"),
-            //             failure => console.log("no rotate")
-            //         )
-            //     );
-            // } else {
-            //     window.screen.orientation.unlock();
-            // }
         }
-        // resizeCanvas();
+
+        function setupFullscreen() {
+            setup = true;
+            let container = document.createElement('div');
+            container.setAttribute('id', 'container');
+            document.body.appendChild(container);
+            container.appendChild(document.querySelector("canvas"));
+        }
     </script>
-    <div id="container"></div>
 
 
 <script type="module">import init from '/xyw/xyz-887d444f8f4df057.js';init('/xyw/xyz-887d444f8f4df057_bg.wasm');</script></body></html>

@@ -9,59 +9,41 @@
 <body>
     <link data-trunk rel="inline" href="build/web/sound.js" />
     <script>
-        // window.addEventListener('resize', resizeCanvas, false);
 
-        // function resizeCanvas() {
-        //     let canvas = document.querySelector("canvas");
-
-        //     var displayWidth = canvas.clientWidth;
-        //     var displayHeight = canvas.clientHeight;
-
-        //     if (canvas.width != displayWidth ||
-        //         canvas.height != displayHeight) {
-        //         canvas.width = displayWidth;
-        //         canvas.height = displayHeight;
-        //     }
-
-        //     console.log("resized " + canvas.width + " " + canvas.height);
-        // }
-
-        // window.addEventListener('DOMContentLoaded', (event) => {
-        //     appendChild();
-        // });
-
-        function appendChild() {
-            let canvas = document.querySelector("canvas");
-            let container = document.querySelector("#container");
-            container.appendChild(canvas)
-        }
+        let setup = false;
 
         document.documentElement.addEventListener('click', requestFullScreen, false);
+        document.addEventListener('fullscreenchange', toggleOrientation, false);
 
-        // document.documentElement.addEventListener('contextmenu', function (ev) {
-        //     ev.preventDefault();
-        //     appendChild();
-        //     return false;
-        // }, false);
+        function toggleOrientation() {
+            if (document.fullscreenElement) {
+                window.screen.orientation.lock('landscape').then(
+                    success => console.log("rotated"),
+                    failure => console.log("no rotate")
+                )
+            }
+            else {
+                window.screen.orientation.unlock();
+            }
+        }
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                appendChild();
-                document.querySelector("#container").requestFullscreen()
+                if (!setup) {
+                    setupFullscreen();
+                }
+                document.querySelector("#container").requestFullscreen();
             }
-            //     .then(
-            //         window.screen.orientation.lock('landscape').then(
-            //             success => console.log("rotated"),
-            //             failure => console.log("no rotate")
-            //         )
-            //     );
-            // } else {
-            //     window.screen.orientation.unlock();
-            // }
         }
-        // resizeCanvas();
+
+        function setupFullscreen() {
+            setup = true;
+            let container = document.createElement('div');
+            container.setAttribute('id', 'container');
+            document.body.appendChild(container);
+            container.appendChild(document.querySelector("canvas"));
+        }
     </script>
-    <div id="container"></div>
 </body>
 
 </html>
