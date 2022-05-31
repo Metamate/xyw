@@ -12,7 +12,7 @@
 
         let setup = false;
 
-        document.documentElement.addEventListener('click', requestFullScreen, false);
+        document.addEventListener('click', requestFullScreen, false);
         document.addEventListener('fullscreenchange', toggleOrientation, false);
 
         function toggleOrientation() {
