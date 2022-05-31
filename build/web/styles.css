@@ -16,6 +16,11 @@ canvas {
     /* max-width: 1280px;
     height: auto !important; */
 }
+#container {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
 /* body {
     background: linear-gradient(-45deg, #a6a6a6, #5ac05a, #262626, #a6a6a6);
     background-size: 400% 400%;

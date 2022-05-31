@@ -19,6 +19,11 @@ canvas {
     /* max-width: 1280px;
     height: auto !important; */
 }
+#container {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
 /* body {
     background: linear-gradient(-45deg, #a6a6a6, #5ac05a, #262626, #a6a6a6);
     background-size: 400% 400%;
@@ -135,29 +140,38 @@ canvas {
         //     appendChild();
         // });
 
-        // function appendChild() {
-        //     let canvas = document.querySelector("canvas");
-        //     let container = document.querySelector("#container");
-        //     container.appendChild(canvas)
-        // }
+        function appendChild() {
+            let canvas = document.querySelector("canvas");
+            let container = document.querySelector("#container");
+            container.appendChild(canvas)
+        }
 
         document.documentElement.addEventListener('click', requestFullScreen, false);
 
+        // document.documentElement.addEventListener('contextmenu', function (ev) {
+        //     ev.preventDefault();
+        //     appendChild();
+        //     return false;
+        // }, false);
+
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                document.querySelector("canvas").requestFullscreen().then(
-                    window.screen.orientation.lock('landscape').then(
-                        success => console.log("rotated"),
-                        failure => console.log("no rotate")
-                    )
-                );
-            } else {
-                window.screen.orientation.unlock();
+                appendChild();
+                document.querySelector("#container").requestFullscreen()
             }
+            //     .then(
+            //         window.screen.orientation.lock('landscape').then(
+            //             success => console.log("rotated"),
+            //             failure => console.log("no rotate")
+            //         )
+            //     );
+            // } else {
+            //     window.screen.orientation.unlock();
+            // }
         }
         // resizeCanvas();
     </script>
-    <!-- <div id="container" style="width: 960px; height: 600px;position: relative;"></div> -->
+    <div id="container"></div>
 
 
 <script type="module">import init from '/xyw/xyz-887d444f8f4df057.js';init('/xyw/xyz-887d444f8f4df057_bg.wasm');</script></body></html>
