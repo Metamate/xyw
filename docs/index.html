@@ -21,6 +21,12 @@ canvas {
 #container {
   width: 100% !important;
   height: 100% !important;
+}
+#fullscreen {
+  width: 50px;
+  height: 20px;
+  position: absolute;
+  z-index: 2;
 }</style>
 
 <link rel="preload" href="/xyw/xyz-887d444f8f4df057_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
@@ -91,23 +97,9 @@ canvas {
 })();
 </script>
     <script>
-
         let setup = false;
 
         document.addEventListener('click', requestFullScreen, false);
-        // document.addEventListener('fullscreenchange', toggleOrientation, false);
-
-        // function toggleOrientation() {
-        //     if (document.fullscreenElement) {
-        //         window.screen.orientation.lock('landscape').then(
-        //             success => console.log("rotated"),
-        //             failure => console.log("no rotate")
-        //         )
-        //     }
-        //     else {
-        //         window.screen.orientation.unlock();
-        //     }
-        // }
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
@@ -115,14 +107,8 @@ canvas {
                     setupFullscreen();
                 }
                 document.querySelector("#container").requestFullscreen().then(
-                    window.screen.orientation.lock('landscape').then(
-                        success => console.log("rotated"),
-                        failure => console.log("no rotate")
-                    )
+                    window.screen.orientation.lock('landscape').catch(e => console.log(e))
                 );
-            }
-            else {
-                window.screen.orientation.unlock();
             }
         }
 
@@ -136,4 +122,31 @@ canvas {
     </script>
 
 
-<script type="module">import init from '/xyw/xyz-887d444f8f4df057.js';init('/xyw/xyz-887d444f8f4df057_bg.wasm');</script></body></html>
+<script type="module">import init from '/xyw/xyz-887d444f8f4df057.js';init('/xyw/xyz-887d444f8f4df057_bg.wasm');</script><script>(function () {
+    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    var url = protocol + '//' + window.location.host + '/_trunk/ws';
+    var poll_interval = 5000;
+    var reload_upon_connect = () => {
+        window.setTimeout(
+            () => {
+                // when we successfully reconnect, we'll force a
+                // reload (since we presumably lost connection to
+                // trunk due to it being killed, so it will have
+                // rebuilt on restart)
+                var ws = new WebSocket(url);
+                ws.onopen = () => window.location.reload();
+                ws.onclose = reload_upon_connect;
+            },
+            poll_interval);
+    };
+
+    var ws = new WebSocket(url);
+    ws.onmessage = (ev) => {
+        const msg = JSON.parse(ev.data);
+        if (msg.reload) {
+            window.location.reload();
+        }
+    };
+    ws.onclose = reload_upon_connect;
+})()
+</script></body></html>
