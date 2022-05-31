@@ -8,29 +8,45 @@
 
 <body>
     <link data-trunk rel="inline" href="build/web/sound.js" />
+    <div id="container">
+        <button id="fullscreen"><img style="width: 30px;height:30px;display:block;"
+                src="https://itch.io/static/images/enlarge.svg?1653596891"></button>
+    </div>
     <script>
-        let setup = false;
+        // let setup = false;
+        let container = document.querySelector("#container");
 
-        document.addEventListener('click', requestFullScreen, false);
+        document.querySelector('#fullscreen').addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                if (!setup) {
-                    setupFullscreen();
-                }
-                document.querySelector("#container").requestFullscreen().then(
+                // if (!setup) {
+                //     setupFullscreen();
+                // }
+                container.requestFullscreen().then(
                     window.screen.orientation.lock('landscape').catch(e => console.log(e))
                 );
             }
         }
 
-        function setupFullscreen() {
-            setup = true;
-            let container = document.createElement('div');
-            container.setAttribute('id', 'container');
-            document.body.appendChild(container);
-            container.appendChild(document.querySelector("canvas"));
-        }
+        // function setupFullscreen() {
+        //     setup = true;
+        //     container.appendChild(document.querySelector("canvas"));
+        // }
+
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                let width = document.querySelector("canvas").getAttribute('width');
+                let height = document.querySelector("canvas").getAttribute('height');
+
+                let canvas = document.querySelector("canvas");
+
+                container.style.maxWidth = width + 'px';
+                container.style.maxHeight = height + 'px';
+                container.appendChild(canvas);
+                canvas.style.display = 'block';
+            }, 100)
+        }, false);
     </script>
 </body>
 

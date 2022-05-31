@@ -4,10 +4,13 @@
     <style type="text/css">html,
 body,
 canvas {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 100%;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 body {
   background: linear-gradient(
@@ -19,22 +22,33 @@ body {
             white 51%,
             white 100%
     ) repeat;
-    background-size: 20px 20px;
+  background-size: 20px 20px;
 }
 canvas {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain;
+  background: white;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+  /* object-position: 50% 0%; */
+  display: none;
 }
 #container {
+  border: 0;
+  position: relative;
   width: 100%;
   height: 100%;
 }
 #fullscreen {
-  width: 50px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   position: absolute;
-  z-index: 2;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  opacity: 0.4;
+  cursor: pointer;
+  border: 0;
 }</style>
 
 <link rel="preload" href="/xyw/xyz-887d444f8f4df057_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
@@ -104,57 +118,45 @@ canvas {
   });
 })();
 </script>
+    <div id="container">
+        <button id="fullscreen"><img style="width: 30px;height:30px;display:block;" src="https://itch.io/static/images/enlarge.svg?1653596891"></button>
+    </div>
     <script>
-        let setup = false;
+        // let setup = false;
+        let container = document.querySelector("#container");
 
-        document.addEventListener('click', requestFullScreen, false);
+        document.querySelector('#fullscreen').addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                if (!setup) {
-                    setupFullscreen();
-                }
-                document.querySelector("#container").requestFullscreen().then(
+                // if (!setup) {
+                //     setupFullscreen();
+                // }
+                container.requestFullscreen().then(
                     window.screen.orientation.lock('landscape').catch(e => console.log(e))
                 );
             }
         }
 
-        function setupFullscreen() {
-            setup = true;
-            let container = document.createElement('div');
-            container.setAttribute('id', 'container');
-            document.body.appendChild(container);
-            container.appendChild(document.querySelector("canvas"));
-        }
+        // function setupFullscreen() {
+        //     setup = true;
+        //     container.appendChild(document.querySelector("canvas"));
+        // }
+
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                let width = document.querySelector("canvas").getAttribute('width');
+                let height = document.querySelector("canvas").getAttribute('height');
+
+                let canvas = document.querySelector("canvas");
+
+                container.style.maxWidth = width + 'px';
+                container.style.maxHeight = height + 'px';
+                container.appendChild(canvas);
+                canvas.style.display = 'block';
+            }, 100)
+        }, false);
     </script>
 
 
-<script type="module">import init from '/xyw/xyz-887d444f8f4df057.js';init('/xyw/xyz-887d444f8f4df057_bg.wasm');</script><script>(function () {
-    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    var url = protocol + '//' + window.location.host + '/_trunk/ws';
-    var poll_interval = 5000;
-    var reload_upon_connect = () => {
-        window.setTimeout(
-            () => {
-                // when we successfully reconnect, we'll force a
-                // reload (since we presumably lost connection to
-                // trunk due to it being killed, so it will have
-                // rebuilt on restart)
-                var ws = new WebSocket(url);
-                ws.onopen = () => window.location.reload();
-                ws.onclose = reload_upon_connect;
-            },
-            poll_interval);
-    };
-
-    var ws = new WebSocket(url);
-    ws.onmessage = (ev) => {
-        const msg = JSON.parse(ev.data);
-        if (msg.reload) {
-            window.location.reload();
-        }
-    };
-    ws.onclose = reload_upon_connect;
-})()
-</script></body></html>
+<script type="module">import init from '/xyw/xyz-887d444f8f4df057.js';init('/xyw/xyz-887d444f8f4df057_bg.wasm');</script></body></html>
