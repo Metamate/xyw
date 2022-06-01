@@ -148,12 +148,12 @@ canvas {
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 document.querySelector("canvas").requestFullscreen().then(() => {
-                    window.screen.orientation.lock('landscape')
-                    // if (canvasWidth > canvasHeight)
-                    //     window.screen.orientation.lock('landscape').catch(e => console.log(e))
-                    // else {
-                    //     window.screen.orientation.lock('portrait').catch(e => console.log(e))
-                    // }
+                    if (canvasWidth > canvasHeight) {
+                        window.screen.orientation.lock('landscape').catch(e => console.log(e))
+                    }
+                    else {
+                        window.screen.orientation.lock('portrait').catch(e => console.log(e))
+                    }
                 });
             }
         }
@@ -168,8 +168,8 @@ canvas {
                         return false;
                     };
 
-                    let canvasWidth = canvas.getAttribute('width');
-                    let canvasHeight = canvas.getAttribute('height');
+                    canvasWidth = canvas.getAttribute('width');
+                    canvasHeight = canvas.getAttribute('height');
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
