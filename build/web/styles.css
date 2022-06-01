@@ -28,6 +28,7 @@ canvas {
   background: #000;
   width: 100% !important;
   height: 100% !important;
+  object-fit: cover;
   display: none;
 }
 #container {
