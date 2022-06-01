@@ -27,7 +27,7 @@
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                container.requestFullscreen().then(() => {
+                canvas.requestFullscreen().then(() => {
                     // if (canvasWidth > canvasHeight) {
                     //     window.screen.orientation.lock('landscape').catch(e => console.log(e))
                     // }
