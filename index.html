@@ -59,6 +59,12 @@
                         }
                     });
 
+                    if (canvasWidth > canvasHeight) {
+                        window.screen.orientation.lock('landscape').catch(e => console.log(e));
+                    } else {
+                        window.screen.orientation.lock('portrait').catch(e => console.log(e));
+                    }
+
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
 
