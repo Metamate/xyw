@@ -31,7 +31,7 @@ canvas {
   background: #000;
   width: 100% !important;
   height: 100% !important;
-  /* object-fit: contain; */
+  object-fit: contain;
   display: none;
 }
 #container {
@@ -139,6 +139,7 @@ canvas {
     <script>
         let container = document.querySelector("#container");
         let wrapper = document.querySelector("#wrapper");
+        let canvas;
 
         let canvasWidth;
         let canvasHeight;
@@ -147,22 +148,20 @@ canvas {
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                if (canvasWidth > canvasHeight) {
-                    window.screen.orientation.lock('landscape').catch(e => console.log(e)).finally(() => {
-                        document.querySelector("canvas").requestFullscreen();
-                    });
-                }
-                else {
-                    window.screen.orientation.lock('portrait').catch(e => console.log(e)).finally(() => {
-                        document.querySelector("canvas").requestFullscreen();
-                    });
-                }
+                container.requestFullscreen().then(() => {
+                    if (canvasWidth > canvasHeight) {
+                        window.screen.orientation.lock('landscape').catch(e => console.log(e))
+                    }
+                    else {
+                        window.screen.orientation.lock('portrait').catch(e => console.log(e))
+                    }
+                });
             }
         }
 
         window.addEventListener('load', function () {
             const interval = setInterval(() => {
-                let canvas = document.querySelector("canvas");
+                canvas = document.querySelector("canvas");
 
                 if (canvas) {
                     clearInterval(interval);
@@ -172,23 +171,6 @@ canvas {
 
                     canvasWidth = canvas.getAttribute('width');
                     canvasHeight = canvas.getAttribute('height');
-
-                    // canvas.addEventListener('fullscreenchange', event => {
-                    //     console.log("changed")
-                    //     if (!document.fullscreenElement) {
-                    //         console.log("resizing")
-                    //         canvas.setAttribute('width', canvasWidth);
-                    //         canvas.setAttribute('height', canvasHeight);
-                    //     }
-                    // });
-
-                    // window.addEventListener('resize', event => {
-                    //     if (!document.fullscreenElement) {
-                    //         console.log("resiiiizing")
-                    //         canvas.setAttribute('width', canvasWidth);
-                    //         canvas.setAttribute('height', canvasHeight);
-                    //     }
-                    // });
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
@@ -202,4 +184,31 @@ canvas {
     </script>
 
 
-<script type="module">import init from '/xyw/xyz-ec6329003f6fb516.js';init('/xyw/xyz-ec6329003f6fb516_bg.wasm');</script></body></html>
+<script type="module">import init from '/xyw/xyz-ec6329003f6fb516.js';init('/xyw/xyz-ec6329003f6fb516_bg.wasm');</script><script>(function () {
+    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    var url = protocol + '//' + window.location.host + '/_trunk/ws';
+    var poll_interval = 5000;
+    var reload_upon_connect = () => {
+        window.setTimeout(
+            () => {
+                // when we successfully reconnect, we'll force a
+                // reload (since we presumably lost connection to
+                // trunk due to it being killed, so it will have
+                // rebuilt on restart)
+                var ws = new WebSocket(url);
+                ws.onopen = () => window.location.reload();
+                ws.onclose = reload_upon_connect;
+            },
+            poll_interval);
+    };
+
+    var ws = new WebSocket(url);
+    ws.onmessage = (ev) => {
+        const msg = JSON.parse(ev.data);
+        if (msg.reload) {
+            window.location.reload();
+        }
+    };
+    ws.onclose = reload_upon_connect;
+})()
+</script></body></html>

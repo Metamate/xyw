@@ -18,6 +18,7 @@
     <script>
         let container = document.querySelector("#container");
         let wrapper = document.querySelector("#wrapper");
+        let canvas;
 
         let canvasWidth;
         let canvasHeight;
@@ -26,22 +27,20 @@
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                if (canvasWidth > canvasHeight) {
-                    window.screen.orientation.lock('landscape').catch(e => console.log(e)).finally(() => {
-                        document.querySelector("canvas").requestFullscreen();
-                    });
-                }
-                else {
-                    window.screen.orientation.lock('portrait').catch(e => console.log(e)).finally(() => {
-                        document.querySelector("canvas").requestFullscreen();
-                    });
-                }
+                container.requestFullscreen().then(() => {
+                    if (canvasWidth > canvasHeight) {
+                        window.screen.orientation.lock('landscape').catch(e => console.log(e))
+                    }
+                    else {
+                        window.screen.orientation.lock('portrait').catch(e => console.log(e))
+                    }
+                });
             }
         }
 
         window.addEventListener('load', function () {
             const interval = setInterval(() => {
-                let canvas = document.querySelector("canvas");
+                canvas = document.querySelector("canvas");
 
                 if (canvas) {
                     clearInterval(interval);
@@ -51,23 +50,6 @@
 
                     canvasWidth = canvas.getAttribute('width');
                     canvasHeight = canvas.getAttribute('height');
-
-                    // canvas.addEventListener('fullscreenchange', event => {
-                    //     console.log("changed")
-                    //     if (!document.fullscreenElement) {
-                    //         console.log("resizing")
-                    //         canvas.setAttribute('width', canvasWidth);
-                    //         canvas.setAttribute('height', canvasHeight);
-                    //     }
-                    // });
-
-                    // window.addEventListener('resize', event => {
-                    //     if (!document.fullscreenElement) {
-                    //         console.log("resiiiizing")
-                    //         canvas.setAttribute('width', canvasWidth);
-                    //         canvas.setAttribute('height', canvasHeight);
-                    //     }
-                    // });
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
