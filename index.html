@@ -50,22 +50,22 @@
                     canvasWidth = canvas.getAttribute('width');
                     canvasHeight = canvas.getAttribute('height');
 
-                    canvas.addEventListener('fullscreenchange', event => {
-                        console.log("changed")
-                        if (!document.fullscreenElement) {
-                            console.log("resizing")
-                            canvas.setAttribute('width', canvasWidth);
-                            canvas.setAttribute('height', canvasHeight);
-                        }
-                    });
+                    // canvas.addEventListener('fullscreenchange', event => {
+                    //     console.log("changed")
+                    //     if (!document.fullscreenElement) {
+                    //         console.log("resizing")
+                    //         canvas.setAttribute('width', canvasWidth);
+                    //         canvas.setAttribute('height', canvasHeight);
+                    //     }
+                    // });
 
-                    window.addEventListener('resize', event => {
-                        if (!document.fullscreenElement) {
-                            console.log("resiiiizing")
-                            canvas.setAttribute('width', canvasWidth);
-                            canvas.setAttribute('height', canvasHeight);
-                        }
-                    });
+                    // window.addEventListener('resize', event => {
+                    //     if (!document.fullscreenElement) {
+                    //         console.log("resiiiizing")
+                    //         canvas.setAttribute('width', canvasWidth);
+                    //         canvas.setAttribute('height', canvasHeight);
+                    //     }
+                    // });
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
