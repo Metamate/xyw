@@ -148,16 +148,16 @@ canvas {
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-
-                if (canvasWidth > canvasHeight) {
-                    window.screen.orientation.lock('landscape').catch(e => console.log(e)).finally(() => {
-                        canvas.requestFullscreen();
-                    });
-                } else {
-                    window.screen.orientation.lock('portrait').catch(e => console.log(e)).finally(() => {
-                        canvas.requestFullscreen();
-                    });
-                }
+                canvas.requestFullscreen();
+                // if (canvasWidth > canvasHeight) {
+                //     window.screen.orientation.lock('landscape').catch(e => console.log(e)).finally(() => {
+                //         canvas.requestFullscreen();
+                //     });
+                // } else {
+                //     window.screen.orientation.lock('portrait').catch(e => console.log(e)).finally(() => {
+                //         canvas.requestFullscreen();
+                //     });
+                // }
             }
         }
 
@@ -174,23 +174,11 @@ canvas {
                     canvasWidth = canvas.getAttribute('width');
                     canvasHeight = canvas.getAttribute('height');
 
-                    // canvas.addEventListener('fullscreenchange', event => {
-                    //     console.log("changed")
-                    //     if (!document.fullscreenElement) {
-                    //         console.log("resizing")
-                    //         canvas.setAttribute('width', canvasWidth);
-                    //         canvas.setAttribute('height', canvasHeight);
-                    //     }
-                    // });
-
-                    // screen.orientation.addEventListener('change', event => {
-                    //     console.log(event)
-                    //     if (document.fullscreenElement) {
-                    //         console.log("resizing")
-                    //         canvas.setAttribute('width', window.innerWidth);
-                    //         canvas.setAttribute('height', window.innerHeight);
-                    //     }
-                    // });
+                    screen.orientation.addEventListener('change', event => {
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        }
+                    });
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
