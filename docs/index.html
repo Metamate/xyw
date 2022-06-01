@@ -9,8 +9,11 @@ canvas {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+}
+h1 {
+  font-size: 300%;
 }
 body {
   background: linear-gradient(
@@ -29,26 +32,33 @@ canvas {
   width: 100% !important;
   height: 100% !important;
   object-fit: contain;
-  /* object-position: 50% 0%; */
   display: none;
 }
 #container {
   border: 0;
   position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  display: none;
+}
+#wrapper {
+  border: 1px solid #000;
 }
 #fullscreen {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   position: absolute;
-  bottom: 10px;
+  bottom: -60px;
   right: 10px;
-  display: flex;
-  justify-content: center;
-  opacity: 0.4;
+  opacity: 0.5;
+  transition: opacity 0.5s;
   cursor: pointer;
+  background: transparent;
+  padding: 0;
   border: 0;
+}
+#fullscreen:hover {
+  opacity: 1;
 }</style>
 
 <link rel="preload" href="/xyw/xyz-887d444f8f4df057_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
@@ -118,30 +128,25 @@ canvas {
   });
 })();
 </script>
-    <div id="container">
-        <button id="fullscreen"><img style="width: 30px;height:30px;display:block;" src="https://itch.io/static/images/enlarge.svg?1653596891"></button>
+
+    <h1>XYW</h1>
+    <div id="wrapper">
+        <div id="container">
+            <button id="fullscreen"><img style="width:100%;height:100%;display:block;" src="assets/fullscreen.svg"></button>
+        </div>
     </div>
     <script>
-        // let setup = false;
         let container = document.querySelector("#container");
 
         document.querySelector('#fullscreen').addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                // if (!setup) {
-                //     setupFullscreen();
-                // }
-                container.requestFullscreen().then(
+                container.requestFullscreen().then(() => {
                     window.screen.orientation.lock('landscape').catch(e => console.log(e))
-                );
+                });
             }
         }
-
-        // function setupFullscreen() {
-        //     setup = true;
-        //     container.appendChild(document.querySelector("canvas"));
-        // }
 
         window.addEventListener('load', function () {
             setTimeout(() => {
@@ -154,6 +159,7 @@ canvas {
                 container.style.maxHeight = height + 'px';
                 container.appendChild(canvas);
                 canvas.style.display = 'block';
+                container.style.display = 'block';
             }, 100)
         }, false);
     </script>
