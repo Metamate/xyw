@@ -31,7 +31,7 @@ canvas {
   background: #000;
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain;
+  /* object-fit: contain; */
   display: none;
 }
 #container {
@@ -148,13 +148,15 @@ canvas {
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 if (canvasWidth > canvasHeight) {
-                    window.screen.orientation.lock('landscape').catch(e => console.log(e))
+                    window.screen.orientation.lock('landscape').catch(e => console.log(e)).finally(() => {
+                        document.querySelector("canvas").requestFullscreen();
+                    });
                 }
                 else {
-                    window.screen.orientation.lock('portrait').catch(e => console.log(e))
+                    window.screen.orientation.lock('portrait').catch(e => console.log(e)).finally(() => {
+                        document.querySelector("canvas").requestFullscreen();
+                    });
                 }
-                document.querySelector("canvas").requestFullscreen().then(() => {
-                });
             }
         }
 
