@@ -39,10 +39,10 @@ canvas {
   position: relative;
   width: 100%;
   height: auto;
-  display: none;
 }
 #wrapper {
   border: 1px solid #000;
+  display:none;
 }
 #fullscreen {
   width: 50px;
@@ -137,6 +137,7 @@ canvas {
     </div>
     <script>
         let container = document.querySelector("#container");
+        let wrapper = document.querySelector("#wrapper");
 
         document.querySelector('#fullscreen').addEventListener('click', requestFullScreen, false);
 
@@ -149,17 +150,20 @@ canvas {
         }
 
         window.addEventListener('load', function () {
-            setTimeout(() => {
-                let width = document.querySelector("canvas").getAttribute('width');
-                let height = document.querySelector("canvas").getAttribute('height');
-
+            const interval = setInterval(() => {
                 let canvas = document.querySelector("canvas");
 
-                container.style.maxWidth = width + 'px';
-                container.style.maxHeight = height + 'px';
-                container.appendChild(canvas);
-                canvas.style.display = 'block';
-                container.style.display = 'block';
+                if (canvas) {
+                    clearInterval(interval);
+                    let width = canvas.getAttribute('width');
+                    let height = canvas.getAttribute('height');
+
+                    container.style.maxWidth = width + 'px';
+                    container.style.maxHeight = height + 'px';
+                    container.appendChild(canvas);
+                    canvas.style.display = 'block';
+                    wrapper.style.display = 'block';
+                }
             }, 100)
         }, false);
     </script>

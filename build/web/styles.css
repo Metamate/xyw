@@ -36,10 +36,10 @@ canvas {
   position: relative;
   width: 100%;
   height: auto;
-  display: none;
 }
 #wrapper {
   border: 1px solid #000;
+  display:none;
 }
 #fullscreen {
   width: 50px;
