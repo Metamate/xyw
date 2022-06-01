@@ -19,12 +19,19 @@
         let container = document.querySelector("#container");
         let wrapper = document.querySelector("#wrapper");
 
+        let canvasWidth;
+        let canvasHeight;
+
         document.querySelector('#fullscreen').addEventListener('click', requestFullScreen, false);
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 container.requestFullscreen().then(() => {
-                    window.screen.orientation.lock('landscape').catch(e => console.log(e))
+                    if (canvasWidth > canvasHeight)
+                        window.screen.orientation.lock('landscape').catch(e => console.log(e))
+                    else {
+                        window.screen.orientation.lock('portrait').catch(e => console.log(e))
+                    }
                 });
             }
         }
@@ -39,16 +46,17 @@
                         return false;
                     };
 
-                    let width = canvas.getAttribute('width');
-                    let height = canvas.getAttribute('height');
+                    let canvasWidth = canvas.getAttribute('width');
+                    let canvasHeight = canvas.getAttribute('height');
 
-                    container.style.maxWidth = width + 'px';
-                    container.style.maxHeight = height + 'px';
+                    container.style.maxWidth = canvasWidth + 'px';
+                    container.style.maxHeight = canvasHeight + 'px';
+
                     container.appendChild(canvas);
                     canvas.style.display = 'block';
                     wrapper.style.display = 'block';
                 }
-            }, 100)
+            }, 50)
         }, false);
     </script>
 </body>
