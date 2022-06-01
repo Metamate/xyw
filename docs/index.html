@@ -148,7 +148,7 @@ canvas {
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                container.requestFullscreen().then(() => {
+                canvas.requestFullscreen().then(() => {
                     if (canvasWidth > canvasHeight) {
                         window.screen.orientation.lock('landscape').catch(e => console.log(e))
                     }
@@ -171,6 +171,24 @@ canvas {
 
                     canvasWidth = canvas.getAttribute('width');
                     canvasHeight = canvas.getAttribute('height');
+
+                    // canvas.addEventListener('fullscreenchange', event => {
+                    //     console.log("changed")
+                    //     if (!document.fullscreenElement) {
+                    //         console.log("resizing")
+                    //         canvas.setAttribute('width', canvasWidth);
+                    //         canvas.setAttribute('height', canvasHeight);
+                    //     }
+                    // });
+
+                    screen.orientation.addEventListener('change', event => {
+                        console.log(event)
+                        if (document.fullscreenElement) {
+                            console.log("resizing")
+                            canvas.setAttribute('width', window.innerWidth);
+                            canvas.setAttribute('height', window.innerHeight);
+                        }
+                    });
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
