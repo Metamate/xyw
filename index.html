@@ -28,15 +28,6 @@
         function requestFullScreen() {
             if (!document.fullscreenElement) {
                 canvas.requestFullscreen();
-                // if (canvasWidth > canvasHeight) {
-                //     window.screen.orientation.lock('landscape').catch(e => console.log(e)).finally(() => {
-                //         canvas.requestFullscreen();
-                //     });
-                // } else {
-                //     window.screen.orientation.lock('portrait').catch(e => console.log(e)).finally(() => {
-                //         canvas.requestFullscreen();
-                //     });
-                // }
             }
         }
 
@@ -53,17 +44,11 @@
                     canvasWidth = canvas.getAttribute('width');
                     canvasHeight = canvas.getAttribute('height');
 
-                    screen.orientation.addEventListener('change', event => {
-                        if (document.fullscreenElement) {
-                            document.exitFullscreen();
-                        }
-                    });
-
-                    if (canvasWidth > canvasHeight) {
-                        window.screen.orientation.lock('landscape').catch(e => console.log(e));
-                    } else {
-                        window.screen.orientation.lock('portrait').catch(e => console.log(e));
-                    }
+                    // screen.orientation.addEventListener('change', event => {
+                    //     if (document.fullscreenElement) {
+                    //         document.exitFullscreen();
+                    //     }
+                    // });
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';

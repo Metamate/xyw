@@ -2,7 +2,7 @@ mod boid;
 use bevy::{ecs::event::Events, prelude::*, sprite::MaterialMesh2dBundle, window::WindowResized};
 use boid::{random, random_range, Boid};
 
-const NO_BOIDS: u16 = 100;
+const NO_BOIDS: u16 = 5;
 
 const ALIGNMENT: f32 = 1.;
 const COHESION: f32 = 0.05;
