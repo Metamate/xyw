@@ -2,7 +2,7 @@ mod boid;
 use bevy::{ecs::event::Events, prelude::*, sprite::MaterialMesh2dBundle, window::WindowResized};
 use boid::{random, random_range, Boid};
 
-const NO_BOIDS: u16 = 5;
+const NO_BOIDS: u16 = 100;
 
 const ALIGNMENT: f32 = 1.;
 const COHESION: f32 = 0.05;
@@ -44,13 +44,6 @@ fn setup(
     window: Res<WindowDescriptor>,
 ) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
-
-    commands.spawn_bundle(MaterialMesh2dBundle {
-        mesh: meshes.add(Mesh::from(shape::Box::default())).into(),
-        transform: Transform::from_xyz(0., 0., 1.).with_scale(Vec3::new(20., 10., 1.)),
-        material: materials.add(ColorMaterial::from(Color::GREEN)),
-        ..default()
-    });
 
     for _ in 0..NO_BOIDS {
         let boid = Boid::new(
