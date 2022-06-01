@@ -44,11 +44,11 @@
                     canvasWidth = canvas.getAttribute('width');
                     canvasHeight = canvas.getAttribute('height');
 
-                    // screen.orientation.addEventListener('change', event => {
-                    //     if (document.fullscreenElement) {
-                    //         document.exitFullscreen();
-                    //     }
-                    // });
+                    screen.orientation.addEventListener('change', event => {
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        }
+                    });
 
                     container.style.maxWidth = canvasWidth + 'px';
                     container.style.maxHeight = canvasHeight + 'px';
