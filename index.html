@@ -37,6 +37,10 @@
 
                 if (canvas) {
                     clearInterval(interval);
+                    canvas.onselectstart = () => {
+                        return false;
+                    };
+
                     let width = canvas.getAttribute('width');
                     let height = canvas.getAttribute('height');
 
