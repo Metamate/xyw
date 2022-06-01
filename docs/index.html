@@ -148,13 +148,16 @@ canvas {
 
         function requestFullScreen() {
             if (!document.fullscreenElement) {
-                canvas.requestFullscreen().then(() => {
-                    if (canvasWidth > canvasHeight)
-                        window.screen.orientation.lock('landscape').catch(e => console.log(e))
-                    else {
-                        window.screen.orientation.lock('portrait').catch(e => console.log(e))
-                    }
-                });
+
+                if (canvasWidth > canvasHeight) {
+                    window.screen.orientation.lock('landscape').catch(e => console.log(e)).finally(() => {
+                        canvas.requestFullscreen();
+                    });
+                } else {
+                    window.screen.orientation.lock('portrait').catch(e => console.log(e)).finally(() => {
+                        canvas.requestFullscreen();
+                    });
+                }
             }
         }
 
