@@ -45,6 +45,13 @@ fn setup(
 ) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 
+    commands.spawn_bundle(MaterialMesh2dBundle {
+        mesh: meshes.add(Mesh::from(shape::Box::default())).into(),
+        transform: Transform::from_xyz(0., 0., 1.).with_scale(Vec3::new(20., 10., 1.)),
+        material: materials.add(ColorMaterial::from(Color::GREEN)),
+        ..default()
+    });
+
     for _ in 0..NO_BOIDS {
         let boid = Boid::new(
             random_range(-window.width / 2., window.width / 2.),

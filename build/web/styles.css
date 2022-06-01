@@ -24,6 +24,11 @@ body {
     ) repeat;
   background-size: 20px 20px;
 }
+@media all and (display-mode: fullscreen) {
+  canvas {
+    /* display: none !important; */
+  }
+}
 canvas {
   background: #000;
   width: 100% !important;
