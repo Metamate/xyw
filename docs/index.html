@@ -133,6 +133,7 @@ canvas {
   });
 })();
 </script>
+    
     <div><img id="loading" src="assets/loading.svg"></div>
     <div id="wrapper">
         <div id="container">
@@ -140,52 +141,57 @@ canvas {
         </div>
     </div>
 
-    <script>
-        let container = document.querySelector("#container");
-        let wrapper = document.querySelector("#wrapper");
-        let canvas;
+    <script>let container = document.querySelector("#container");
+let wrapper = document.querySelector("#wrapper");
+let canvas;
 
-        let canvasWidth;
-        let canvasHeight;
+let canvasWidth;
+let canvasHeight;
 
-        document.querySelector('#fullscreen').addEventListener('click', requestFullScreen, false);
+document
+  .querySelector("#fullscreen")
+  .addEventListener("click", requestFullScreen, false);
 
-        function requestFullScreen() {
-            if (!document.fullscreenElement) {
-                canvas.requestFullscreen();
-            }
-        }
+function requestFullScreen() {
+  if (!document.fullscreenElement) {
+    canvas.requestFullscreen();
+  }
+}
 
-        window.addEventListener('load', function () {
-            const interval = setInterval(() => {
-                canvas = document.querySelector("canvas");
+window.addEventListener(
+  "load",
+  function () {
+    const interval = setInterval(() => {
+      canvas = document.querySelector("canvas");
 
-                if (canvas) {
-                    clearInterval(interval);
-                    canvas.onselectstart = () => {
-                        return false;
-                    };
+      if (canvas) {
+        clearInterval(interval);
+        canvas.onselectstart = () => {
+          return false;
+        };
 
-                    canvasWidth = canvas.getAttribute('width');
-                    canvasHeight = canvas.getAttribute('height');
+        canvasWidth = canvas.getAttribute("width");
+        canvasHeight = canvas.getAttribute("height");
 
-                    screen.orientation.addEventListener('change', event => {
-                        if (document.fullscreenElement) {
-                            document.exitFullscreen();
-                        }
-                    });
+        screen.orientation.addEventListener("change", (event) => {
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          }
+        });
 
-                    container.style.maxWidth = canvasWidth + 'px';
-                    container.style.maxHeight = canvasHeight + 'px';
+        container.style.maxWidth = canvasWidth + "px";
+        container.style.maxHeight = canvasHeight + "px";
 
-                    container.appendChild(canvas);
-                    document.querySelector('#loading').style.display = 'none';
-                    canvas.style.display = 'block';
-                    wrapper.style.display = 'block';
-                }
-            }, 50)
-        }, false);
-    </script>
+        container.appendChild(canvas);
+        document.querySelector("#loading").style.display = "none";
+        canvas.style.display = "block";
+        wrapper.style.display = "block";
+      }
+    }, 50);
+  },
+  false
+);
+</script>
 
 
 <script type="module">import init from '/xyw/xyz-ec6329003f6fb516.js';init('/xyw/xyz-ec6329003f6fb516_bg.wasm');</script></body></html>
