@@ -1,7 +1,8 @@
 mod boid;
 mod input;
+
 use bevy::{ecs::event::Events, prelude::*, sprite::MaterialMesh2dBundle, window::WindowResized};
-use boid::{random, random_range, Boid};
+use boid::{get_random_color, random_range, Boid};
 use input::InputPlugin;
 
 const NO_BOIDS: u16 = 100;
@@ -13,7 +14,14 @@ const SEPARATION: f32 = 1.;
 #[derive(Component)]
 pub struct MainCamera;
 
-pub const BACKGROUND_COLOR: Color = Color::rgb(1., 1., 1.);
+pub const BACKGROUND_COLOR: Color = Color::rgb(0.161, 0.157, 0.157);
+pub const BOID_COLORS: [(f32, f32, f32); 5] = [
+    (0.4, 0.361, 0.329),
+    (0.49, 0.682, 0.639),
+    (0.573, 0.514, 0.455),
+    (0.49, 0.682, 0.639),
+    (0.537, 0.706, 0.51), //next: brightgreen
+];
 
 pub struct BoidPlugin;
 
@@ -50,7 +58,7 @@ fn setup(
     window: Res<WindowDescriptor>,
 ) {
     commands
-        .spawn_bundle(OrthographicCameraBundle::new_2d())
+        .spawn_bundle(Camera2dBundle::default())
         .insert(MainCamera);
 
     for _ in 0..NO_BOIDS {
@@ -59,7 +67,7 @@ fn setup(
             random_range(-window.height / 2., window.height / 2.),
             5.,
             5.,
-            (random(), random(), random()),
+            get_random_color(),
         );
 
         commands

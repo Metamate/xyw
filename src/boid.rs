@@ -3,6 +3,8 @@ use std::ops::{Div, Sub};
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
+use crate::BOID_COLORS;
+
 const PERCEPTION_RADIUS: f32 = 50.;
 
 #[derive(PartialEq, Copy, Clone, Component)]
@@ -104,6 +106,12 @@ impl Boid {
 }
 
 // HELPER FUNCTIONS
+
+pub fn get_random_color() -> (f32, f32, f32) {
+    let mut rng = thread_rng();
+    BOID_COLORS[rng.gen_range(0..BOID_COLORS.len())]
+}
+
 pub fn random() -> f32 {
     thread_rng().gen_range(0.0..=1.0)
 }

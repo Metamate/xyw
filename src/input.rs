@@ -1,4 +1,7 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
+use bevy_prototype_lyon::{
+    plugin::ShapePlugin,
+};
 
 use crate::MainCamera;
 
@@ -6,7 +9,9 @@ pub struct InputPlugin;
 
 impl Plugin for InputPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(mouse_button_input);
+        app.insert_resource(Msaa { samples: 4 })
+            .add_plugin(ShapePlugin)
+            .add_system(mouse_button_input);
     }
 }
 
@@ -34,7 +39,7 @@ pub fn mouse_button_input(
 
             // matrix for undoing the projection and camera transform
             let ndc_to_world =
-                camera_transform.compute_matrix() * camera.projection_matrix.inverse();
+                camera_transform.compute_matrix() * camera.projection_matrix().inverse();
 
             // use it to convert ndc to world-space coordinates
             let world_pos = ndc_to_world.project_point3(ndc.extend(-1.0));
