@@ -1,7 +1,5 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
-use bevy_prototype_lyon::{
-    plugin::ShapePlugin,
-};
+use bevy_prototype_lyon::plugin::ShapePlugin;
 
 use crate::MainCamera;
 
@@ -10,8 +8,8 @@ pub struct InputPlugin;
 impl Plugin for InputPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Msaa { samples: 4 })
-            .add_plugin(ShapePlugin)
-            .add_system(mouse_button_input);
+            .add_plugin(ShapePlugin);
+        // .add_system(mouse_button_input);
     }
 }
 

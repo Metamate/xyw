@@ -15,12 +15,16 @@ const SEPARATION: f32 = 1.;
 pub struct MainCamera;
 
 pub const BACKGROUND_COLOR: Color = Color::rgb(0.161, 0.157, 0.157);
-pub const BOID_COLORS: [(f32, f32, f32); 5] = [
+pub const BOID_COLORS: [(f32, f32, f32); 9] = [
     (0.4, 0.361, 0.329),
     (0.49, 0.682, 0.639),
     (0.573, 0.514, 0.455),
-    (0.49, 0.682, 0.639),
-    (0.537, 0.706, 0.51), //next: brightgreen
+    (0.537, 0.706, 0.51),
+    (0.663, 0.714, 0.396),
+    (0.831, 0.745, 0.596),
+    (0.827, 0.525, 0.608),
+    (0.918, 0.412, 0.384),
+    (0.847, 0.651, 0.341),
 ];
 
 pub struct BoidPlugin;
