@@ -8,8 +8,8 @@ pub struct InputPlugin;
 impl Plugin for InputPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Msaa { samples: 4 })
-            .add_plugin(ShapePlugin);
-        // .add_system(mouse_button_input);
+            .add_plugin(ShapePlugin)
+            .add_system(mouse_button_input);
     }
 }
 
@@ -48,7 +48,7 @@ pub fn mouse_button_input(
             commands.spawn_bundle(MaterialMesh2dBundle {
                 mesh: meshes.add(Mesh::from(shape::Icosphere::default())).into(),
                 transform: Transform::from_xyz(world_pos.x, world_pos.y, 1.)
-                    .with_scale(Vec3::new(10., 10., 1.)),
+                    .with_scale(Vec3::new(5., 5., 1.)),
                 material: materials.add(ColorMaterial::from(Color::RED)),
                 ..default()
             });
