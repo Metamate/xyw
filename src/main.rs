@@ -66,12 +66,11 @@ fn setup(
         .insert(MainCamera);
 
     for _ in 0..NO_BOIDS {
-        let boid = Boid::new(
-            random_range(-window.width / 2., window.width / 2.),
-            random_range(-window.height / 2., window.height / 2.),
-            5.,
-            5.,
-            get_random_color(),
+        let boid = spawn_random_boid(
+            -window.width / 2.,
+            window.width / 2.,
+            -window.height / 2.,
+            window.height / 2.,
         );
 
         commands
@@ -84,6 +83,18 @@ fn setup(
             })
             .insert(boid);
     }
+}
+
+fn spawn_random_boid(left: f32, right: f32, bottom: f32, top: f32) -> Boid {
+    let boid = Boid::new(
+        random_range(left, right),
+        random_range(bottom, top),
+        5.,
+        5.,
+        get_random_color(),
+    );
+
+    boid
 }
 
 fn update_boids(

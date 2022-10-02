@@ -1,7 +1,10 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use bevy_prototype_lyon::plugin::ShapePlugin;
 
-use crate::MainCamera;
+use crate::{
+    boid::{get_random_color, Boid},
+    MainCamera,
+};
 
 pub struct InputPlugin;
 
@@ -45,13 +48,24 @@ pub fn mouse_button_input(
             // reduce it to a 2D value
             let world_pos: Vec2 = world_pos.truncate();
 
-            commands.spawn_bundle(MaterialMesh2dBundle {
-                mesh: meshes.add(Mesh::from(shape::Icosphere::default())).into(),
-                transform: Transform::from_xyz(world_pos.x, world_pos.y, 1.)
-                    .with_scale(Vec3::new(5., 5., 1.)),
-                material: materials.add(ColorMaterial::from(Color::RED)),
-                ..default()
-            });
+            let boid = Boid::new(world_pos.x, world_pos.y, 5., 5., get_random_color());
+
+            commands
+                .spawn_bundle(MaterialMesh2dBundle {
+                    mesh: meshes.add(Mesh::from(shape::Icosphere::default())).into(),
+                    transform: Transform::from_xyz(boid.position.x, boid.position.y, 1.)
+                        .with_scale(Vec3::new(boid.width, boid.height, 1.)),
+                    material: materials.add(ColorMaterial::from(boid.color)),
+                    ..default()
+                })
+                .insert(boid);
+            // commands.spawn_bundle(MaterialMesh2dBundle {
+            //     mesh: meshes.add(Mesh::from(shape::Icosphere::default())).into(),
+            //     transform: Transform::from_xyz(world_pos.x, world_pos.y, 1.)
+            //         .with_scale(Vec3::new(5., 5., 1.)),
+            //     material: materials.add(ColorMaterial::from(Color::RED)),
+            //     ..default()
+            // });
         }
     }
 }
