@@ -50,7 +50,7 @@ fn main() {
         })
         .add_system(window_resize)
         .add_plugins(DefaultPlugins)
-        .add_plugin(BoidPlugin)
+        .add_plugin(BoidPlugin) 
         .add_plugin(InputPlugin)
         .run();
 }
@@ -86,15 +86,13 @@ fn setup(
 }
 
 fn spawn_random_boid(left: f32, right: f32, bottom: f32, top: f32) -> Boid {
-    let boid = Boid::new(
+    Boid::new(
         random_range(left, right),
         random_range(bottom, top),
         5.,
         5.,
         get_random_color(),
-    );
-
-    boid
+    )
 }
 
 fn update_boids(
@@ -131,7 +129,7 @@ fn update_boids(
 fn window_resize(resize_event: Res<Events<WindowResized>>, mut window: ResMut<WindowDescriptor>) {
     let mut event_reader = resize_event.get_reader();
     for event in event_reader.iter(&resize_event) {
-        window.width = event.width.try_into().unwrap();
-        window.height = event.height.try_into().unwrap();
+        window.width = event.width;
+        window.height = event.height;
     }
 }
