@@ -1,7 +1,7 @@
 mod boid;
 mod input;
 
-use bevy::{ecs::event::Events, prelude::*, sprite::MaterialMesh2dBundle, window::WindowResized};
+use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use boid::{get_random_color, random_range, Boid};
 use input::InputPlugin;
 
@@ -10,9 +10,6 @@ const NO_BOIDS: u16 = 100;
 const ALIGNMENT: f32 = 1.;
 const COHESION: f32 = 0.05;
 const SEPARATION: f32 = 1.;
-
-#[derive(Component)]
-pub struct MainCamera;
 
 pub const BACKGROUND_COLOR: Color = Color::rgb(0.161, 0.157, 0.157);
 pub const BOID_COLORS: [(f32, f32, f32); 9] = [
@@ -31,27 +28,31 @@ pub struct BoidPlugin;
 
 impl Plugin for BoidPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(GameTimer(Timer::from_seconds(0.01, true)))
+        app.insert_resource(GameTimer(Timer::from_seconds(0.01, TimerMode::Repeating)))
             .insert_resource(ClearColor(BACKGROUND_COLOR))
-            .add_startup_system(setup)
-            .add_system(update_boids);
+            .add_systems(Startup, setup)
+            .add_systems(Update, update_boids);
     }
 }
 
+#[derive(Resource, Deref, DerefMut)]
 struct GameTimer(Timer);
 
 fn main() {
     App::new()
-        .insert_resource(WindowDescriptor {
-            title: "Superboids".to_string(),
-            width: 1280.,
-            height: 720.,
-            ..default()
-        })
-        .add_system(window_resize)
-        .add_plugins(DefaultPlugins)
-        .add_plugin(BoidPlugin) 
-        .add_plugin(InputPlugin)
+        //.add_systems(Update, on_resize_system)
+        .add_plugins((
+            DefaultPlugins.set(WindowPlugin {
+                primary_window: Some(Window {
+                    title: "Superboids".to_string(),
+                    resolution: (1280., 720.).into(),
+                    ..default()
+                }),
+                ..default()
+            }),
+            BoidPlugin,
+            InputPlugin,
+        ))
         .run();
 }
 
@@ -59,23 +60,23 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
-    window: Res<WindowDescriptor>,
+    windows: Query<&Window>,
 ) {
-    commands
-        .spawn_bundle(Camera2dBundle::default())
-        .insert(MainCamera);
+    commands.spawn(Camera2dBundle::default());
+
+    let window = windows.single();
 
     for _ in 0..NO_BOIDS {
         let boid = spawn_random_boid(
-            -window.width / 2.,
-            window.width / 2.,
-            -window.height / 2.,
-            window.height / 2.,
+            -window.resolution.width() / 2.,
+            window.resolution.width() / 2.,
+            -window.resolution.height() / 2.,
+            window.resolution.height() / 2.,
         );
 
         commands
-            .spawn_bundle(MaterialMesh2dBundle {
-                mesh: meshes.add(Mesh::from(shape::Icosphere::default())).into(),
+            .spawn(MaterialMesh2dBundle {
+                mesh: meshes.add(Mesh::from(shape::Circle::default())).into(),
                 transform: Transform::from_xyz(boid.position.x, boid.position.y, 1.)
                     .with_scale(Vec3::new(boid.width, boid.height, 1.)),
                 material: materials.add(ColorMaterial::from(boid.color)),
@@ -89,18 +90,20 @@ fn spawn_random_boid(left: f32, right: f32, bottom: f32, top: f32) -> Boid {
     Boid::new(
         random_range(left, right),
         random_range(bottom, top),
-        5.,
-        5.,
+        10.,
+        10.,
         get_random_color(),
     )
 }
 
 fn update_boids(
     time: Res<Time>,
-    window: Res<WindowDescriptor>,
+    windows: Query<&Window>,
     mut timer: ResMut<GameTimer>,
     mut query: Query<(&mut Boid, &mut Transform)>,
 ) {
+    let window = windows.single();
+
     let boids: Vec<Boid> = query.iter().map(|(b, _)| *b).collect();
 
     if timer.0.tick(time.delta()).just_finished() {
@@ -115,21 +118,13 @@ fn update_boids(
 
             boid.update();
             boid.contain(
-                -window.width / 2.,
-                window.width / 2.,
-                -window.height / 2.,
-                window.height / 2.,
+                -window.resolution.width() / 2.,
+                window.resolution.width() / 2.,
+                -window.resolution.height() / 2.,
+                window.resolution.height() / 2.,
             );
             transform.translation.y = boid.position.y;
             transform.translation.x = boid.position.x;
         }
-    }
-}
-
-fn window_resize(resize_event: Res<Events<WindowResized>>, mut window: ResMut<WindowDescriptor>) {
-    let mut event_reader = resize_event.get_reader();
-    for event in event_reader.iter(&resize_event) {
-        window.width = event.width;
-        window.height = event.height;
     }
 }
