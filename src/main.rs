@@ -40,7 +40,6 @@ struct GameTimer(Timer);
 
 fn main() {
     App::new()
-        //.add_systems(Update, on_resize_system)
         .add_plugins((
             DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
