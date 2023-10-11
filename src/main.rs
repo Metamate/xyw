@@ -1,11 +1,14 @@
 mod boid;
 mod input;
+mod movement;
 
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
-use boid::{get_random_color, random_range, Boid};
+use boid::{get_random_color, random, random_range, Boid, RigidBody};
 use input::InputPlugin;
+use movement::MovementPlugin;
 
 const NO_BOIDS: u16 = 100;
+const BOID_SIZE: (u8, u8) = (10, 10);
 
 const ALIGNMENT: f32 = 1.;
 const COHESION: f32 = 0.05;
@@ -28,19 +31,14 @@ pub struct BoidPlugin;
 
 impl Plugin for BoidPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(GameTimer(Timer::from_seconds(0.01, TimerMode::Repeating)))
-            .insert_resource(ClearColor(BACKGROUND_COLOR))
-            .add_systems(Startup, setup)
-            .add_systems(Update, update_boids);
+        app.insert_resource(ClearColor(BACKGROUND_COLOR))
+            .add_systems(Startup, setup);
+        //.add_systems(Update, update_boids);
     }
 }
 
-#[derive(Resource, Deref, DerefMut)]
-struct GameTimer(Timer);
-
 fn main() {
     App::new()
-        //.add_systems(Update, on_resize_system)
         .add_plugins((
             DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
@@ -51,7 +49,8 @@ fn main() {
                 ..default()
             }),
             BoidPlugin,
-            InputPlugin,
+            MovementPlugin,
+            //InputPlugin,
         ))
         .run();
 }
@@ -67,64 +66,75 @@ fn setup(
     let window = windows.single();
 
     for _ in 0..NO_BOIDS {
-        let boid = spawn_random_boid(
-            -window.resolution.width() / 2.,
-            window.resolution.width() / 2.,
-            -window.resolution.height() / 2.,
-            window.resolution.height() / 2.,
-        );
+        let rb = RigidBody {
+            velocity: Vec2::new(random() - 0.5, random() - 0.5),
+            acceleration: Vec2::new(random() - 0.5, random() - 0.5),
+            max_force: 0.5,
+            max_velocity: 5.,
+            min_velocity: 1.5,
+        };
 
         commands
             .spawn(MaterialMesh2dBundle {
                 mesh: meshes.add(Mesh::from(shape::Circle::default())).into(),
-                transform: Transform::from_xyz(boid.position.x, boid.position.y, 1.)
-                    .with_scale(Vec3::new(boid.width, boid.height, 1.)),
-                material: materials.add(ColorMaterial::from(boid.color)),
+                transform: Transform::from_xyz(
+                    random_range(
+                        -window.resolution.width() / 2.,
+                        window.resolution.width() / 2.,
+                    ),
+                    random_range(
+                        -window.resolution.height() / 2.,
+                        window.resolution.height() / 2.,
+                    ),
+                    1.,
+                )
+                .with_scale(Vec3::new(BOID_SIZE.0.into(), BOID_SIZE.1.into(), 1.)),
+                material: materials.add(ColorMaterial::from(Color::from(get_random_color()))),
                 ..default()
             })
-            .insert(boid);
+            .insert(rb);
     }
 }
 
-fn spawn_random_boid(left: f32, right: f32, bottom: f32, top: f32) -> Boid {
-    Boid::new(
-        random_range(left, right),
-        random_range(bottom, top),
-        10.,
-        10.,
-        get_random_color(),
-    )
-}
+// fn spawn_random_boid(left: f32, right: f32, bottom: f32, top: f32) -> Boid {
+//     Boid::new(
+//         random_range(left, right),
+//         random_range(bottom, top),
+//         10.,
+//         10.,
+//         get_random_color(),
+//     )
+// }
 
-fn update_boids(
-    time: Res<Time>,
-    windows: Query<&Window>,
-    mut timer: ResMut<GameTimer>,
-    mut query: Query<(&mut Boid, &mut Transform)>,
-) {
-    let window = windows.single();
+// fn update_boids(
+//     time: Res<Time>,
+//     windows: Query<&Window>,
+//     mut timer: ResMut<GameTimer>,
+//     mut query: Query<(&mut Boid, &mut Transform)>,
+// ) {
+//     let window = windows.single();
 
-    let boids: Vec<Boid> = query.iter().map(|(b, _)| *b).collect();
+//     let boids: Vec<Boid> = query.iter().map(|(b, _)| *b).collect();
 
-    if timer.0.tick(time.delta()).just_finished() {
-        for (mut boid, mut transform) in query.iter_mut() {
-            let local_boids = boid.local_boids(&boids);
-            let alignment = boid.alignment(&local_boids);
-            let cohesion = boid.cohesion(&local_boids);
-            let separation = boid.separation(&local_boids);
+//     if timer.0.tick(time.delta()).just_finished() {
+//         for (mut boid, mut transform) in query.iter_mut() {
+//             let local_boids = boid.local_boids(&boids);
+//             let alignment = boid.alignment(&local_boids);
+//             let cohesion = boid.cohesion(&local_boids);
+//             let separation = boid.separation(&local_boids);
 
-            boid.acceleration +=
-                alignment * ALIGNMENT + cohesion * COHESION + separation * SEPARATION;
+//             boid.acceleration +=
+//                 alignment * ALIGNMENT + cohesion * COHESION + separation * SEPARATION;
 
-            boid.update();
-            boid.contain(
-                -window.resolution.width() / 2.,
-                window.resolution.width() / 2.,
-                -window.resolution.height() / 2.,
-                window.resolution.height() / 2.,
-            );
-            transform.translation.y = boid.position.y;
-            transform.translation.x = boid.position.x;
-        }
-    }
-}
+//             boid.update();
+//             boid.contain(
+//                 -window.resolution.width() / 2.,
+//                 window.resolution.width() / 2.,
+//                 -window.resolution.height() / 2.,
+//                 window.resolution.height() / 2.,
+//             );
+//             transform.translation.y = boid.position.y;
+//             transform.translation.x = boid.position.x;
+//         }
+//     }
+// }
