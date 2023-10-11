@@ -1,6 +1,6 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
-use crate::boid::{get_random_color, Boid};
+use crate::boid::get_random_color;
 
 pub struct InputPlugin;
 

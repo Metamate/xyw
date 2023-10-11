@@ -3,16 +3,12 @@ mod input;
 mod movement;
 
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
-use boid::{get_random_color, random, random_range, Boid, RigidBody};
+use boid::{get_random_color, random, random_range, RigidBody};
 use input::InputPlugin;
 use movement::MovementPlugin;
 
-const NO_BOIDS: u16 = 100;
+const NO_BOIDS: u16 = 1000;
 const BOID_SIZE: (u8, u8) = (10, 10);
-
-const ALIGNMENT: f32 = 1.;
-const COHESION: f32 = 0.05;
-const SEPARATION: f32 = 1.;
 
 pub const BACKGROUND_COLOR: Color = Color::rgb(0.161, 0.157, 0.157);
 pub const BOID_COLORS: [(f32, f32, f32); 9] = [
@@ -33,7 +29,6 @@ impl Plugin for BoidPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(ClearColor(BACKGROUND_COLOR))
             .add_systems(Startup, setup);
-        //.add_systems(Update, update_boids);
     }
 }
 
@@ -67,8 +62,8 @@ fn setup(
 
     for _ in 0..NO_BOIDS {
         let rb = RigidBody {
-            velocity: Vec2::new(random() - 0.5, random() - 0.5),
-            acceleration: Vec2::new(random() - 0.5, random() - 0.5),
+            velocity: Vec3::new(random() - 0.5, random() - 0.5, 0.),
+            acceleration: Vec3::new(random() - 0.5, random() - 0.5, 0.),
             max_force: 0.5,
             max_velocity: 5.,
             min_velocity: 1.5,
