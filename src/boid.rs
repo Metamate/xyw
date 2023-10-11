@@ -20,16 +20,21 @@ pub struct Boid {
     min_velocity: f32,
 }
 
-#[derive(Component)]
-pub struct RigidBody {
-    pub velocity: Vec2,
-    pub acceleration: Vec2,
-    pub max_force: f32,
-    pub min_velocity: f32,
-    pub max_velocity: f32,
-}
-
 impl Boid {
+    pub fn new(pos_x: f32, pos_y: f32, width: f32, height: f32, color: (f32, f32, f32)) -> Self {
+        Self {
+            position: Vec2::new(pos_x, pos_y),
+            velocity: Vec2::new(random() - 0.5, random() - 0.5),
+            acceleration: Vec2::new(random() - 0.5, random() - 0.5),
+            max_force: 0.5,
+            max_velocity: 5.,
+            min_velocity: 1.5,
+            width,
+            height,
+            color: Color::rgb(color.0, color.1, color.2),
+        }
+    }
+
     pub fn update(&mut self) {
         self.acceleration = self.acceleration.clamp_length_max(self.max_force);
         self.position += self.velocity;
@@ -102,9 +107,9 @@ impl Boid {
 
 // HELPER FUNCTIONS
 
-pub fn get_random_color() -> [f32; 3] {
+pub fn get_random_color() -> (f32, f32, f32) {
     let mut rng = thread_rng();
-    BOID_COLORS[rng.gen_range(0..BOID_COLORS.len())].into()
+    BOID_COLORS[rng.gen_range(0..BOID_COLORS.len())]
 }
 
 pub fn random() -> f32 {

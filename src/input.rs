@@ -30,24 +30,23 @@ pub fn mouse_button_input(
             .cursor_position()
             .and_then(|cursor| camera.viewport_to_world_2d(camera_transform, cursor))
         {
-            //TODO, I should spawn an entity with components
-            // let boid = Boid::new(
-            //     world_position.x,
-            //     world_position.y,
-            //     10.,
-            //     10.,
-            //     get_random_color(),
-            // );
+            let boid = Boid::new(
+                world_position.x,
+                world_position.y,
+                10.,
+                10.,
+                get_random_color(),
+            );
 
-            // commands
-            //     .spawn(MaterialMesh2dBundle {
-            //         mesh: meshes.add(Mesh::from(shape::Circle::default())).into(),
-            //         transform: Transform::from_xyz(boid.position.x, boid.position.y, 1.)
-            //             .with_scale(Vec3::new(boid.width, boid.height, 1.)),
-            //         material: materials.add(ColorMaterial::from(boid.color)),
-            //         ..default()
-            //     })
-            //     .insert(boid);
+            commands
+                .spawn(MaterialMesh2dBundle {
+                    mesh: meshes.add(Mesh::from(shape::Circle::default())).into(),
+                    transform: Transform::from_xyz(boid.position.x, boid.position.y, 1.)
+                        .with_scale(Vec3::new(boid.width, boid.height, 1.)),
+                    material: materials.add(ColorMaterial::from(boid.color)),
+                    ..default()
+                })
+                .insert(boid);
         }
     }
 }

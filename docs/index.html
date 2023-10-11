@@ -68,8 +68,8 @@ canvas {
   margin-top: 50px;
 }</style>
 
-<link rel="preload" href="/xyw/xyz-504a85c316223868_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
-<link rel="modulepreload" href="/xyw/xyz-504a85c316223868.js"></head>
+<link rel="preload" href="/xyw/xyw-5ecbc13bd53c5e9_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/xyw/xyw-5ecbc13bd53c5e9.js"></head>
 
 <body>
     <script>// Insert hack to make sound autoplay on Chrome as soon as the user interacts with the tab:
@@ -196,31 +196,4 @@ window.addEventListener(
 </script>
 
 
-<script type="module">import init from '/xyw/xyz-504a85c316223868.js';init('/xyw/xyz-504a85c316223868_bg.wasm');</script><script>(function () {
-    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    var url = protocol + '//' + window.location.host + '/_trunk/ws';
-    var poll_interval = 5000;
-    var reload_upon_connect = () => {
-        window.setTimeout(
-            () => {
-                // when we successfully reconnect, we'll force a
-                // reload (since we presumably lost connection to
-                // trunk due to it being killed, so it will have
-                // rebuilt on restart)
-                var ws = new WebSocket(url);
-                ws.onopen = () => window.location.reload();
-                ws.onclose = reload_upon_connect;
-            },
-            poll_interval);
-    };
-
-    var ws = new WebSocket(url);
-    ws.onmessage = (ev) => {
-        const msg = JSON.parse(ev.data);
-        if (msg.reload) {
-            window.location.reload();
-        }
-    };
-    ws.onclose = reload_upon_connect;
-})()
-</script></body></html>
+<script type="module">import init from '/xyw/xyw-5ecbc13bd53c5e9.js';init('/xyw/xyw-5ecbc13bd53c5e9_bg.wasm');</script></body></html>
