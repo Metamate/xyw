@@ -2,27 +2,10 @@ mod boid;
 mod input;
 
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
-use boid::{get_random_color, random_range, Boid};
+use boid::{get_random_color, random_range, Boid, ALIGNMENT, COHESION, NO_BOIDS, SEPARATION, BOID_SIZE};
 use input::InputPlugin;
 
-const NO_BOIDS: u16 = 100;
-
-const ALIGNMENT: f32 = 1.;
-const COHESION: f32 = 0.05;
-const SEPARATION: f32 = 1.;
-
 pub const BACKGROUND_COLOR: Color = Color::rgb(0.161, 0.157, 0.157);
-pub const BOID_COLORS: [(f32, f32, f32); 9] = [
-    (0.4, 0.361, 0.329),
-    (0.49, 0.682, 0.639),
-    (0.573, 0.514, 0.455),
-    (0.537, 0.706, 0.51),
-    (0.663, 0.714, 0.396),
-    (0.831, 0.745, 0.596),
-    (0.827, 0.525, 0.608),
-    (0.918, 0.412, 0.384),
-    (0.847, 0.651, 0.341),
-];
 
 pub struct BoidPlugin;
 
@@ -77,8 +60,8 @@ fn setup(
             .spawn(MaterialMesh2dBundle {
                 mesh: meshes.add(Mesh::from(shape::Circle::default())).into(),
                 transform: Transform::from_xyz(boid.position.x, boid.position.y, 1.)
-                    .with_scale(Vec3::new(boid.width, boid.height, 1.)),
-                material: materials.add(ColorMaterial::from(boid.color)),
+                    .with_scale(Vec3::new(BOID_SIZE, BOID_SIZE, 1.)),
+                material: materials.add(ColorMaterial::from(get_random_color())),
                 ..default()
             })
             .insert(boid);
@@ -86,13 +69,7 @@ fn setup(
 }
 
 fn spawn_random_boid(left: f32, right: f32, bottom: f32, top: f32) -> Boid {
-    Boid::new(
-        random_range(left, right),
-        random_range(bottom, top),
-        10.,
-        10.,
-        get_random_color(),
-    )
+    Boid::new(random_range(left, right), random_range(bottom, top))
 }
 
 fn update_boids(

@@ -3,45 +3,49 @@ use std::ops::{Div, Sub};
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
-use crate::BOID_COLORS;
-
+pub const NO_BOIDS: u16 = 1000;
+pub const BOID_SIZE: f32 = 5.;
+pub const ALIGNMENT: f32 = 10.;
+pub const COHESION: f32 = 5.;
+pub const SEPARATION: f32 = 10.;
 const PERCEPTION_RADIUS: f32 = 50.;
+const MAX_FORCE: f32 = 0.5;
+const MIN_VELOCITY: f32 = 1.5;
+const MAX_VELOCITY: f32 = 5.;
+
+pub const BOID_COLORS: [(f32, f32, f32); 9] = [
+    (0.4, 0.361, 0.329),
+    (0.49, 0.682, 0.639),
+    (0.573, 0.514, 0.455),
+    (0.537, 0.706, 0.51),
+    (0.663, 0.714, 0.396),
+    (0.831, 0.745, 0.596),
+    (0.827, 0.525, 0.608),
+    (0.918, 0.412, 0.384),
+    (0.847, 0.651, 0.341),
+];
 
 #[derive(PartialEq, Copy, Clone, Component)]
 pub struct Boid {
     pub position: Vec2,
     pub velocity: Vec2,
     pub acceleration: Vec2,
-    pub width: f32,
-    pub height: f32,
-    pub color: Color,
-    max_force: f32,
-    max_velocity: f32,
-    min_velocity: f32,
 }
 
 impl Boid {
-    pub fn new(pos_x: f32, pos_y: f32, width: f32, height: f32, color: (f32, f32, f32)) -> Self {
+    pub fn new(pos_x: f32, pos_y: f32) -> Self {
         Self {
             position: Vec2::new(pos_x, pos_y),
             velocity: Vec2::new(random() - 0.5, random() - 0.5),
             acceleration: Vec2::new(random() - 0.5, random() - 0.5),
-            max_force: 0.5,
-            max_velocity: 5.,
-            min_velocity: 1.5,
-            width,
-            height,
-            color: Color::rgb(color.0, color.1, color.2),
         }
     }
 
     pub fn update(&mut self) {
-        self.acceleration = self.acceleration.clamp_length_max(self.max_force);
+        self.acceleration = self.acceleration.clamp_length_max(MAX_FORCE);
         self.position += self.velocity;
         self.velocity += self.acceleration;
-        self.velocity = self
-            .velocity
-            .clamp_length(self.min_velocity, self.max_velocity);
+        self.velocity = self.velocity.clamp_length(MIN_VELOCITY, MAX_VELOCITY);
         self.acceleration = Vec2::ZERO;
     }
 
@@ -107,9 +111,10 @@ impl Boid {
 
 // HELPER FUNCTIONS
 
-pub fn get_random_color() -> (f32, f32, f32) {
+pub fn get_random_color() -> Color {
     let mut rng = thread_rng();
-    BOID_COLORS[rng.gen_range(0..BOID_COLORS.len())]
+    let color: [f32; 3] = BOID_COLORS[rng.gen_range(0..BOID_COLORS.len())].into();
+    Color::from(color)
 }
 
 pub fn random() -> f32 {
