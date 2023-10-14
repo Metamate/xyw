@@ -3,15 +3,32 @@ use std::ops::{Div, Sub};
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
-pub const NO_BOIDS: u16 = 1000;
-pub const BOID_SIZE: f32 = 5.;
-pub const ALIGNMENT: f32 = 10.;
-pub const COHESION: f32 = 5.;
-pub const SEPARATION: f32 = 10.;
+pub const NO_BOIDS: u16 = 500;
+pub const BOID_SIZE: f32 = 10.;
+pub const ALIGNMENT: f32 = 5.;
+pub const COHESION: f32 = 1.;
+pub const SEPARATION: f32 = 5.;
 const PERCEPTION_RADIUS: f32 = 50.;
 const MAX_FORCE: f32 = 0.5;
 const MIN_VELOCITY: f32 = 1.5;
 const MAX_VELOCITY: f32 = 5.;
+
+#[derive(Resource)]
+pub struct BoidSettings {
+    pub alignment: f32,
+    pub cohesion: f32,
+    pub separation: f32,
+}
+
+impl Default for BoidSettings {
+    fn default() -> Self {
+        BoidSettings {
+            alignment: ALIGNMENT,
+            cohesion: COHESION,
+            separation: SEPARATION,
+        }
+    }
+}
 
 pub const BOID_COLORS: [(f32, f32, f32); 9] = [
     (0.4, 0.361, 0.329),

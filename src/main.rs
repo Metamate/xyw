@@ -2,7 +2,7 @@ mod boid;
 mod input;
 
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
-use boid::{get_random_color, random_range, Boid, ALIGNMENT, COHESION, NO_BOIDS, SEPARATION, BOID_SIZE};
+use boid::{get_random_color, random_range, Boid, BoidSettings, BOID_SIZE, NO_BOIDS};
 use input::InputPlugin;
 
 pub const BACKGROUND_COLOR: Color = Color::rgb(0.161, 0.157, 0.157);
@@ -13,6 +13,7 @@ impl Plugin for BoidPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(GameTimer(Timer::from_seconds(0.01, TimerMode::Repeating)))
             .insert_resource(ClearColor(BACKGROUND_COLOR))
+            .insert_resource(BoidSettings::default())
             .add_systems(Startup, setup)
             .add_systems(Update, update_boids);
     }
@@ -76,6 +77,7 @@ fn update_boids(
     time: Res<Time>,
     windows: Query<&Window>,
     mut timer: ResMut<GameTimer>,
+    boid_settings: Res<BoidSettings>,
     mut query: Query<(&mut Boid, &mut Transform)>,
 ) {
     let window = windows.single();
@@ -89,8 +91,9 @@ fn update_boids(
             let cohesion = boid.cohesion(&local_boids);
             let separation = boid.separation(&local_boids);
 
-            boid.acceleration +=
-                alignment * ALIGNMENT + cohesion * COHESION + separation * SEPARATION;
+            boid.acceleration += alignment * boid_settings.alignment
+                + cohesion * boid_settings.cohesion
+                + separation * boid_settings.separation;
 
             boid.update();
             boid.contain(

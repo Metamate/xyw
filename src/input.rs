@@ -1,17 +1,38 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
-use crate::boid::{get_random_color, Boid, BOID_SIZE};
+use crate::boid::{get_random_color, Boid, BoidSettings, BOID_SIZE};
 
 pub struct InputPlugin;
 
 impl Plugin for InputPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Msaa::Sample4)
-            .add_systems(Update, mouse_button_input);
+            .add_systems(Update, (mouse_button_input_system, keyboard_input_system));
     }
 }
 
-pub fn mouse_button_input(
+fn keyboard_input_system(keys: Res<Input<KeyCode>>, mut boid_settings: ResMut<BoidSettings>) {
+    if keys.pressed(KeyCode::Q) {
+        boid_settings.alignment += 1.;
+    }
+    if keys.pressed(KeyCode::A) {
+        boid_settings.alignment -= 1.;
+    }
+    if keys.pressed(KeyCode::W) {
+        boid_settings.cohesion += 1.;
+    }
+    if keys.pressed(KeyCode::S) {
+        boid_settings.cohesion -= 1.;
+    }
+    if keys.pressed(KeyCode::E) {
+        boid_settings.separation += 1.;
+    }
+    if keys.pressed(KeyCode::D) {
+        boid_settings.separation -= 1.;
+    }
+}
+
+fn mouse_button_input_system(
     buttons: Res<Input<MouseButton>>,
     windows: Query<&Window>,
     q_camera: Query<(&Camera, &GlobalTransform)>,
