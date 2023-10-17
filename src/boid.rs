@@ -3,6 +3,8 @@ use std::ops::{Div, Sub};
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
+use crate::GameTimer;
+
 pub const NO_BOIDS: u16 = 100;
 pub const BOID_SIZE: f32 = 10.;
 pub const ALIGNMENT: f32 = 5.;
@@ -45,6 +47,15 @@ pub const BOID_COLORS: [(f32, f32, f32); 9] = [
     (0.847, 0.651, 0.341),
 ];
 
+pub struct BoidPlugin;
+
+impl Plugin for BoidPlugin {
+    fn build(&self, app: &mut App) {
+        app.insert_resource(BoidSettings::default())
+            .add_systems(Update, update_boids);
+    }
+}
+
 #[derive(PartialEq, Copy, Clone, Component)]
 pub struct Boid {
     pub position: Vec2,
@@ -77,19 +88,6 @@ impl Boid {
             })
             .collect()
     }
-
-    // pub fn contain(&mut self, left: f32, right: f32, bottom: f32, top: f32) {
-    //     if self.position.x > right {
-    //         self.position.x = left;
-    //     } else if self.position.x < left {
-    //         self.position.x = right;
-    //     }
-    //     if self.position.y > top {
-    //         self.position.y = bottom;
-    //     } else if self.position.y < bottom {
-    //         self.position.y = top;
-    //     }
-    // }
 
     pub fn contain(&mut self, left: f32, right: f32, bottom: f32, top: f32) {
         if self.position.x > right - BORDER_MARGIN {
@@ -140,6 +138,46 @@ impl Boid {
             sum - boid.position.sub(self.position).div(inverse_magnitude)
         })
     }
+}
+
+fn update_boids(
+    time: Res<Time>,
+    windows: Query<&Window>,
+    mut timer: ResMut<GameTimer>,
+    boid_settings: Res<BoidSettings>,
+    mut query: Query<(&mut Boid, &mut Transform)>,
+) {
+    let window = windows.single();
+
+    let boids: Vec<Boid> = query.iter().map(|(b, _)| *b).collect();
+
+    if timer.0.tick(time.delta()).just_finished() {
+        for (mut boid, mut transform) in query.iter_mut() {
+            let local_boids = boid.local_boids(&boids);
+            let alignment = boid.alignment(&local_boids);
+            let cohesion = boid.cohesion(&local_boids);
+            let separation = boid.separation(&local_boids);
+
+            boid.acceleration += alignment * boid_settings.alignment
+                + cohesion * boid_settings.cohesion
+                + separation * boid_settings.separation;
+
+            boid.contain(
+                -window.resolution.width() / 2.,
+                window.resolution.width() / 2.,
+                -window.resolution.height() / 2.,
+                window.resolution.height() / 2.,
+            );
+
+            boid.update();
+            transform.translation.y = boid.position.y;
+            transform.translation.x = boid.position.x;
+        }
+    }
+}
+
+pub fn spawn_random_boid(left: f32, right: f32, bottom: f32, top: f32) -> Boid {
+    Boid::new(random_range(left, right), random_range(bottom, top))
 }
 
 // HELPER FUNCTIONS

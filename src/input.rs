@@ -12,22 +12,22 @@ impl Plugin for InputPlugin {
 }
 
 fn keyboard_input_system(keys: Res<Input<KeyCode>>, mut boid_settings: ResMut<BoidSettings>) {
-    if keys.pressed(KeyCode::Q) {
+    if keys.just_pressed(KeyCode::Q) {
         boid_settings.alignment += 1.;
     }
-    if keys.pressed(KeyCode::A) {
+    if keys.just_pressed(KeyCode::A) {
         boid_settings.alignment -= 1.;
     }
-    if keys.pressed(KeyCode::W) {
+    if keys.just_pressed(KeyCode::W) {
         boid_settings.cohesion += 1.;
     }
-    if keys.pressed(KeyCode::S) {
+    if keys.just_pressed(KeyCode::S) {
         boid_settings.cohesion -= 1.;
     }
-    if keys.pressed(KeyCode::E) {
+    if keys.just_pressed(KeyCode::E) {
         boid_settings.separation += 1.;
     }
-    if keys.pressed(KeyCode::D) {
+    if keys.just_pressed(KeyCode::D) {
         boid_settings.separation -= 1.;
     }
 }
