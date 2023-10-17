@@ -95,13 +95,14 @@ fn update_boids(
                 + cohesion * boid_settings.cohesion
                 + separation * boid_settings.separation;
 
-            boid.update();
             boid.contain(
                 -window.resolution.width() / 2.,
                 window.resolution.width() / 2.,
                 -window.resolution.height() / 2.,
                 window.resolution.height() / 2.,
             );
+
+            boid.update();
             transform.translation.y = boid.position.y;
             transform.translation.x = boid.position.x;
         }

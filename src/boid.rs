@@ -3,15 +3,18 @@ use std::ops::{Div, Sub};
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
-pub const NO_BOIDS: u16 = 500;
+pub const NO_BOIDS: u16 = 100;
 pub const BOID_SIZE: f32 = 10.;
 pub const ALIGNMENT: f32 = 5.;
 pub const COHESION: f32 = 1.;
 pub const SEPARATION: f32 = 5.;
 const PERCEPTION_RADIUS: f32 = 50.;
 const MAX_FORCE: f32 = 0.5;
-const MIN_VELOCITY: f32 = 1.5;
-const MAX_VELOCITY: f32 = 5.;
+const MIN_VELOCITY: f32 = 0.5;
+const MAX_VELOCITY: f32 = 1.;
+
+const BORDER_MARGIN: f32 = 5.;
+const BORDER_TURN_FACTOR: f32 = 10000.;
 
 #[derive(Resource)]
 pub struct BoidSettings {
@@ -75,16 +78,29 @@ impl Boid {
             .collect()
     }
 
+    // pub fn contain(&mut self, left: f32, right: f32, bottom: f32, top: f32) {
+    //     if self.position.x > right {
+    //         self.position.x = left;
+    //     } else if self.position.x < left {
+    //         self.position.x = right;
+    //     }
+    //     if self.position.y > top {
+    //         self.position.y = bottom;
+    //     } else if self.position.y < bottom {
+    //         self.position.y = top;
+    //     }
+    // }
+
     pub fn contain(&mut self, left: f32, right: f32, bottom: f32, top: f32) {
-        if self.position.x > right {
-            self.position.x = left;
-        } else if self.position.x < left {
-            self.position.x = right;
+        if self.position.x > right - BORDER_MARGIN {
+            self.acceleration.x -= BORDER_TURN_FACTOR;
+        } else if self.position.x < left + BORDER_MARGIN {
+            self.acceleration.x += BORDER_TURN_FACTOR;
         }
-        if self.position.y > top {
-            self.position.y = bottom;
-        } else if self.position.y < bottom {
-            self.position.y = top;
+        if self.position.y > top - BORDER_MARGIN {
+            self.acceleration.y -= BORDER_TURN_FACTOR;
+        } else if self.position.y < bottom + BORDER_MARGIN {
+            self.acceleration.y += BORDER_TURN_FACTOR;
         }
     }
 
